@@ -19,96 +19,109 @@ import re
 RIGHT_KEYWORDS = [
     # MAGA / Trump
     "maga", "trump", "makeamericagreatagain", "trumptrain", "trump2024",
-    "trump2020", "trump2022", "kag", "keepamericagreat", "djt",
-    "americafirst", "stopthesteal", "fraudwasreal",
-    # GOP / Republican
+    "trump2020", "trump2022", "djt", "americafirst", "stopthesteal", "fraudwasreal",
+    # GOP / Republican party
     "republican", "gop", "rnc", "conservative", "tpusa",
     "turning point", "charlie kirk", "ben shapiro", "ted cruz",
     "desantis", "ron desantis", "marjorie taylor greene", "mtg",
     "matt gaetz", "jim jordan",
-    # Alt-right / incel
-    "redpill", "red pill", "bluepill", "blue pill", "blackpill",
-    "black pill", "chad", "stacy", "looksmaxing", "looksmax",
-    "8020 rule", "80 20 rule", "alpha male", "beta male",
-    "soyboy", "soy boy", "cuck", "npc", "simp", "mewing",
-    "andrew tate", "fresh and fit", "sneako", "myron gaines",
-    "pearl", "adin ross", "jordan peterson", "incel",
-    "femoid", "niceguy", "nice guy", "sigma",
-    "high value man", "sexual market value", "smv",
-    # Anti-left rhetoric
-    "antifa bad", "defund fails", "anti-woke", "antiwoke",
-    "woke mob", "cancel culture bad", "dei bad", "dei hire",
-    "groomer", "let's go brandon", "fjb", "deep state",
-    "qanon", "cabal", "great replacement",
+    # Clearly right-coded online figures
+    "andrew tate", "sneako", "pearl davis", "adin ross",
+    "jordan peterson", "incel", "redpill", "red pill",
+    "alpha male", "soyboy", "soy boy", "cuck",
+    # Anti-left / culture war rhetoric
+    "anti-woke", "antiwoke", "woke mob",
+    "dei bad", "dei hire", "groomer",
+    "let's go brandon", "fjb", "deep state",
+    "qanon", "great replacement",
     # Immigration (right framing)
-    "build the wall", "illegal alien", "open borders bad",
-    "border invasion", "securetheborder",
-    # Pro-Israel (right framing)
-    "hamas terrorist", "islamic terrorism", "standwithisrael",
-    "idf", "never again", "proIsrael",
-    # Energy / economy
-    "clean coal", "drill baby drill", "energy independence",
-    "no green new deal", "anti esg",
-    # Social
-    "all lives matter", "blue lives matter", "backtheblue",
-    "thinblueline", "family values", "traditional values",
+    "build the wall", "illegal alien", "border invasion", "securetheborder",
+    # Social / values
+    "all lives matter", "blue lives matter", "backtheblue", "thinblueline",
     "pro life", "prolife", "anti abortion",
-    "gun rights", "2a", "second amendment", "nra",
-    "rfk", "robert f kennedy",
+    "gun rights", "second amendment", "nra",
+    # Energy / economy (right framing)
+    "clean coal", "drill baby drill", "no green new deal", "anti esg",
+    # Right-wing TV commentators
+    "tucker carlson", "hannity", "sean hannity",
+    "laura ingraham", "greg gutfeld", "gutfeld",
+    "candace owens", "matt walsh", "steven crowder", "crowder",
+    "dan bongino", "bongino", "glenn beck", "tomi lahren", "mark levin",
+    # 2022 midterm Republicans + prominent figures
+    "jd vance", "vance",
+    "herschel walker",
+    "dr oz", "mehmet oz",
+    "kari lake",
+    "lauren boebert", "boebert",
+    "kevin mccarthy", "mccarthy",
+    "rand paul", "tim scott", "ron johnson", "greg abbott",
+    "blake masters",
+    # Key events (right-coded)
+    "speaker vote", "speaker of the house",
+    "twitter files", "twitterfiles",
 ]
 
 # ---------------------------------------------------------------
 # LEFT-LEANING keywords (progressive / liberal / left)
 # ---------------------------------------------------------------
 LEFT_KEYWORDS = [
-    # Progressive politics
-    "progressive", "democrat", "dnc", "liberal", "leftwing",
-    "left wing", "bernie", "bernie sanders", "aoc",
-    "alexandria ocasio cortez", "squad", "the squad",
+    # Progressive party / movement
+    "progressive", "democrat", "dnc", "liberal",
+    "bernie", "bernie sanders", "aoc", "alexandria ocasio cortez",
     "elizabeth warren", "ilhan omar", "rashida tlaib",
-    "hasan piker", "emma vigeland", "sam seder",
-    "majority report", "the young turks", "tyt",
-    # Policy
+    "hasan piker", "sam seder", "majority report", "the young turks", "tyt",
+    # Clearly left policy positions
     "medicare for all", "m4a", "green new deal", "gnd",
-    "taxtherich", "tax the rich", "wealth tax",
+    "tax the rich", "taxtherich", "wealth tax",
     "student debt", "student loan forgiveness",
-    "living wage", "livable wage", "minimum wage hike",
-    "universal healthcare", "ubi",
-    "climate justice", "climate action", "renewableenergy",
-    "renewable energy", "solar energy", "wind energy",
-    # Social justice
+    "universal healthcare",
+    "climate justice", "climate action",
+    # Social justice movements
     "blacklivesmatter", "blm", "black lives matter",
     "stopaapihate", "stop aapi hate",
     "nodapl", "landback", "land back",
     "abolish ice", "defund the police", "acab",
-    "prison abolition", "restorative justice",
+    "the squad",
     # Reproductive rights
     "mybodymychoice", "prochoice", "pro choice",
-    "abortion rights", "repeal the ban", "roevwade",
-    "roe v wade",
-    # Gender / feminist
-    "metoo", "me too", "believewomen", "believe women",
-    "equal pay", "gender equality", "feminist", "feminism",
-    "womens rights", "wnba", "nwsl", "womens sports",
-    "sexism", "misogyny",
+    "abortion rights", "roevwade", "roe v wade",
     # LGBTQ+
-    "pride", "lgbtq", "lgbt", "trans rights",
-    "transrightsarehumanrights", "lovewins",
-    "anti discrimination", "protecttranskids",
-    # Palestine / anti-war
-    "freepalestine", "free palestine", "ceasefire",
-    "gazagenocide", "gaza", "occupation ends",
-    "endtheoccupation", "palestinewillbefree",
-    "antiwar", "anti war", "peacenow",
+    "lgbtq", "lgbt", "trans rights",
+    "transrightsarehumanrights", "lovewins", "protecttranskids",
+    "pride month",
+    # Feminist
+    "metoo", "me too", "feminist", "feminism",
+    # Palestine (left framing)
+    "freepalestine", "free palestine", "ceasefire", "gazagenocide",
     # Immigration (left framing)
-    "familiesbelongtogether", "nobanbonwall",
-    "dreamers", "daca", "immigrantsarehumans",
-    # Misinformation / science
-    "followthescience", "climatechange is real",
-    "vaccineswork", "vaccines work",
-    # Anti-authoritarian
-    "resist", "notmypresident", "impeach",
-    "fascism warning", "antifascist",
+    "dreamers", "daca", "familiesbelongtogether",
+    # January 6th (left-coded — hearings, insurrection framing)
+    "january 6", "january6", "january 6th", "january6th", "insurrection",
+    # Voting / election (left framing)
+    "vote blue", "voteblue", "democracy wins", "democracywins",
+    # Democratic legislation
+    "inflation reduction act", "build back better",
+    # Anti-authoritarian (clearly coded)
+    "notmypresident", "impeach", "antifascist",
+    # Anti-Musk / Twitter chaos (left-coded post-acquisition)
+    "rip twitter", "riptwitter", "block elon", "blockelon",
+    "twitter layoffs", "twitterlayoffs",
+    # Mainstream Democratic politicians
+    "biden", "joe biden",
+    "kamala", "kamala harris",
+    "pelosi", "nancy pelosi",
+    "schumer", "chuck schumer",
+    "fetterman", "john fetterman",
+    "warnock", "raphael warnock",
+    "stacey abrams",
+    "gavin newsom", "newsom",
+    "pete buttigieg", "buttigieg",
+    "mandela barnes", "katie hobbs", "val demings",
+    # Left-leaning TV commentators
+    "rachel maddow", "maddow",
+    "joy reid", "don lemon",
+    "brian stelter", "stelter",
+    "chris hayes", "nicolle wallace", "joy behar",
 ]
 
 # ---------------------------------------------------------------
@@ -131,23 +144,92 @@ NEUTRAL_KEYWORDS = [
 # ---------------------------------------------------------------
 # Classifier
 # ---------------------------------------------------------------
-def _tokenize(text: str) -> str:
-    return re.sub(r"[^a-z0-9 ]", "", text.lower().strip())
+# Tokenizer — two representations used together:
+#   1. token_set : individual words after CamelCase splitting (whole-word matching)
+#   2. flat      : full lowercased string, spaces only (multi-word phrase matching)
+# ---------------------------------------------------------------
+
+def _camel_split(text: str) -> list:
+    """
+    Split a CamelCase / PascalCase / ALL_CAPS string into individual word tokens.
+    Also handles hashtags (#GoPackGo) and underscores.
+
+    Examples:
+        '#GoPackGo'      -> ['go', 'pack', 'go']
+        '#TrumpIsGuilty' -> ['trump', 'is', 'guilty']
+        'MAGA'           -> ['maga']
+        '#SuzukaGP'      -> ['suzuka', 'gp']       # 'gp' != 'gop'  ✓
+        'Timmy Trumpet'  -> ['timmy', 'trumpet']   # 'trumpet' != 'trump' ✓
+        'Gore Magala'    -> ['gore', 'magala']      # 'magala' != 'maga'  ✓
+        'DeSantis'       -> ['de', 'santis']
+        '#GOPClownShow'  -> ['gop', 'clown', 'show']
+    """
+    # strip leading # or @
+    text = re.sub(r'^[#@]+', '', text.strip())
+    # insert space before: lowercase→Uppercase boundary
+    text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+    # insert space before: run-of-caps → Cap+lower boundary  (e.g. "GOPClown" → "GOP Clown")
+    text = re.sub(r'([A-Z]{2,})([A-Z][a-z])', r'\1 \2', text)
+    # split on whitespace, underscores, hyphens, digits boundaries
+    tokens = re.split(r'[\s_\-]+', text)
+    return [t.lower() for t in tokens if t]
+
+
+def _prepare(topic: str):
+    """
+    Returns (token_set, flat_str) for a topic string.
+      token_set : set of individual lowercase tokens (for whole-word keyword matching)
+      flat_str  : full lowercased, stripped string with punctuation removed (for phrase matching)
+
+    token_set also includes the fully-squashed form (spaces removed) so that compound
+    proper names like 'DeSantis' → ['de','santis'] also produce 'desantis' as a token,
+    allowing the single-word keyword 'desantis' to match.
+    """
+    token_set = set(_camel_split(topic))
+    flat_str  = re.sub(r"[^a-z0-9 ]", "", topic.lower().strip())
+    squashed  = flat_str.replace(" ", "")
+    if squashed:
+        token_set.add(squashed)
+    return token_set, flat_str
+
+
+def _count_hits(keywords: list, token_set: set, flat_str: str) -> int:
+    """
+    Score a keyword list against a topic.
+
+    Single-word keywords → whole-word token match against token_set.
+      Prevents 'gop' matching inside 'gopackgo'.
+
+    Multi-word keywords  → ALL keyword tokens must be present in topic's token_set (AND-match).
+      '#TuckerCarlson' → {tucker, carlson} ⊆ topic tokens  → match ✓
+      'PJ Tucker'      → {pj, tucker}  ⊄ {tucker carlson}  → no match ✓
+      '#HerschelWalker'→ {herschel, walker} ⊆ topic tokens → match ✓
+    """
+    hits = 0
+    for kw in keywords:
+        if " " in kw:                           # multi-word: AND-match on tokens
+            kw_tokens = set(kw.lower().split())
+            if kw_tokens.issubset(token_set):
+                hits += 1
+        else:                                   # single word: exact token match
+            if kw in token_set:
+                hits += 1
+    return hits
 
 
 def classify_topic(topic: str) -> str:
     """
     Returns 'right', 'left', or 'neutral'.
-    Checks for keyword matches; 'neutral' is the default fallback.
+    Uses CamelCase-aware tokenization to avoid false substring matches.
     """
-    t = _tokenize(topic)
+    token_set, flat_str = _prepare(topic)
 
-    right_hits = sum(1 for kw in RIGHT_KEYWORDS if kw in t)
-    left_hits  = sum(1 for kw in LEFT_KEYWORDS  if kw in t)
-    neutral_hits = sum(1 for kw in NEUTRAL_KEYWORDS if kw in t)
+    right_hits   = _count_hits(RIGHT_KEYWORDS,   token_set, flat_str)
+    left_hits    = _count_hits(LEFT_KEYWORDS,    token_set, flat_str)
+    neutral_hits = _count_hits(NEUTRAL_KEYWORDS, token_set, flat_str)
 
     if right_hits == 0 and left_hits == 0 and neutral_hits == 0:
-        return "neutral"   # unclassified defaults to neutral
+        return "neutral"
 
     scores = {"right": right_hits, "left": left_hits, "neutral": neutral_hits}
     return max(scores, key=scores.get)
@@ -159,19 +241,38 @@ def classify_batch(topics: list) -> list:
 
 
 if __name__ == "__main__":
-    # Quick smoke test
+    # Smoke test — expected labels
     tests = [
-        ("MAGA", "right"),
-        ("Black Lives Matter", "left"),
-        ("Super Bowl", "neutral"),
-        ("Andrew Tate", "right"),
-        ("Free Palestine", "left"),
-        ("Taylor Swift", "neutral"),
-        ("gun rights", "right"),
-        ("Medicare for All", "left"),
+        # True positives that should still work
+        ("MAGA",                  "right"),
+        ("Black Lives Matter",    "left"),
+        ("Super Bowl",            "neutral"),
+        ("Andrew Tate",           "right"),
+        ("Free Palestine",        "left"),
+        ("Taylor Swift",          "neutral"),
+        ("gun rights",            "right"),
+        ("Medicare for All",      "left"),
+        ("#TrumpIsGuilty",        "right"),
+        ("#GOPClownShow",         "right"),
+        ("DeSantis",              "right"),
+        # False positives that the old tokenizer got wrong
+        ("#GoPackGo",             "neutral"),   # 'gop' inside camel token
+        ("#LetsGoPens",           "neutral"),   # 'gop' inside camel token
+        ("#SuzukaGP",             "neutral"),   # 'gp' != 'gop'
+        ("Timmy Trumpet",         "neutral"),   # 'trumpet' != 'trump'
+        ("Gore Magala",           "neutral"),   # 'magala' != 'maga'
+        ("Ubisoft",               "neutral"),   # 'ubi' token ≠ 'ubi' keyword? actually will still match
+        ("Hubie Brown",           "neutral"),   # 'ubi' inside 'hubie'
+        ("Gophers",               "neutral"),   # 'gophers' != 'gop'
+        ("#CarabaoCupFinal",      "neutral"),   # 'aoc' not a standalone token
+        ("Suicide Squad",         "neutral"),   # 'squad' only, not 'the squad'
     ]
     print("Lexicon smoke test:")
+    all_pass = True
     for topic, expected in tests:
         result = classify_topic(topic)
         status = "OK" if result == expected else f"FAIL (expected {expected})"
-        print(f"  {topic:30s} -> {result:8s}  {status}")
+        if result != expected:
+            all_pass = False
+        print(f"  {topic:35s} -> {result:8s}  {status}")
+    print(f"\n{'All tests passed.' if all_pass else 'Some tests FAILED — review above.'}")

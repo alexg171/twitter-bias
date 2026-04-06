@@ -22,7 +22,7 @@ TOPIC_BATCHES = [
     ["NFL", "NBA", "Netflix", "Taylor Swift", "hurricane"],
 ]
 
-TIMEFRAME = "2022-04-01 2023-04-30"   # 6 months pre + 6 months post acquisition
+TIMEFRAME = "2020-10-27 2024-10-27"   # 2 years pre + 2 years post acquisition
 GEO = "US"
 OUT_FILE = "out/google_trends.csv"
 
