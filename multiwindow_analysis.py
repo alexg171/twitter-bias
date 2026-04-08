@@ -14,7 +14,7 @@ For each window:
   - Report: pre/post means, DiD coefficient, p-value, CI
   - Plot: smoothed timeseries with treatment vline
 
-Twitter data source: out/twitter_1774668850.csv  (Oct 2020 – Oct 2024)
+Twitter data source: out/twitter_trending_4yr.csv  (Oct 2020 – Oct 2024)
 
 Output:
   out/multiwindow_results.csv
@@ -33,7 +33,7 @@ sys.path.insert(0, ".")
 from lexicon import classify_topic
 
 TREATMENT  = pd.Timestamp("2022-10-27")
-DATA_FILE  = "out/twitter_1774668850.csv"
+DATA_FILE  = "out/twitter_trending_4yr.csv"
 FIGURES    = "out/figures"
 os.makedirs(FIGURES, exist_ok=True)
 

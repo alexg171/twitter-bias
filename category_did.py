@@ -64,7 +64,7 @@ TEST_CATS = [
 
 def build_twitter_panel() -> pd.DataFrame:
     print("Building Twitter daily category panel …")
-    df = pd.read_csv("out/twitter_1774668850.csv", parse_dates=["Date"])
+    df = pd.read_csv("out/twitter_trending_4yr.csv", parse_dates=["Date"])
     df = df.drop_duplicates(subset=["Date", "Topic"])
     df = df[(df["Date"] >= PRE_START) & (df["Date"] <= POST_END)]
     df["category"] = df["Topic"].apply(classify_category)

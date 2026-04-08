@@ -27,7 +27,7 @@ from category_lexicon import (
 )
 
 TREATMENT = pd.Timestamp("2022-10-27")
-DATA_FILE = "out/twitter_1774668850.csv"
+DATA_FILE = "out/twitter_trending_4yr.csv"
 FIGURES   = "out/figures"
 os.makedirs(FIGURES, exist_ok=True)
 

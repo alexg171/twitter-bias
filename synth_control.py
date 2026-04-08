@@ -57,7 +57,7 @@ plt.rcParams.update({
 # ── 1. DATA LOADING ──────────────────────────────────────────────────────────
 
 def build_twitter_series() -> pd.Series:
-    df = pd.read_csv("out/twitter_1774593752.csv", parse_dates=["Date"])
+    df = pd.read_csv("out/twitter_trending_4yr.csv", parse_dates=["Date"])
     df = df.drop_duplicates(subset=["Date", "Topic"])
     df = df[(df["Date"] >= PRE_START) & (df["Date"] <= POST_END)]
     df["label"] = df["Topic"].apply(classify_topic)
