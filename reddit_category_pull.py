@@ -43,6 +43,24 @@ SUBREDDIT_CATEGORY = {
     "worldnews":          "news_events",
     "wnba":               "sports_womens",
     "NWSL":               "sports_womens",
+    "Twitter":            "musk_twitter",
+    "elonmusk":           "musk_twitter",
+    "technology":         "musk_twitter",
+    "movies":             "entertainment",
+    "Music":              "entertainment",
+    "formula1":           "sports_other",
+    "tennis":             "sports_other",
+    "golf":               "sports_other",
+    "politics":            "politics",
+    "PoliticalDiscussion": "politics",
+    "conservative":        "politics",
+    "republican":          "politics",
+    "democrats":           "politics",
+    "Liberal":             "politics",
+    "progressive":         "politics",
+    "libertarian":         "politics",
+    "NeutralPolitics":     "politics",
+    "news":                "news_events",
 }
 
 os.makedirs("out", exist_ok=True)
@@ -57,9 +75,6 @@ if os.path.exists(OUT_FILE):
         if len(sub_data) >= 1400:  # ~1462 days, allow small gaps
             done_subs.add(sub)
     print(f"Already complete: {sorted(done_subs)}")
-    # Keep existing data, only pull missing subs
-    existing = existing[existing["subreddit"].isin(done_subs)]
-    existing.to_csv(OUT_FILE, sep="\t", index=False)
 else:
     with open(OUT_FILE, "w") as f:
         f.write("date\tsubreddit\tcategory\tn_posts\ttotal_score\n")

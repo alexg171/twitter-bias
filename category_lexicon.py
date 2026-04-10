@@ -81,6 +81,10 @@ WRESTLING = [
     "sasha banks", "bayley", "charlotte flair", "asuka",
     "roman", "usos", "bloodline",
     "wrestling", "kayfabe", "titantron",
+    "la knight", "laknight", "andrade",
+    "rhea", "sami", "jericho", "bianca", "seth", "brock",
+    "vince", "vince mcmahon",
+    "punk",
 ]
 
 SPORTS_NBA = [
@@ -108,6 +112,17 @@ SPORTS_NBA = [
     "chet", "derrick white", "jordan poole", "darvin ham",
     "victor wembanyama", "wemby", "scoot henderson",
     "basketball",
+    "ja morant", "jamorant", "grayson allen", "graysonallen",
+    "scott foster", "scottfoster", "jimmy butler", "jimmybutler",
+    "garland", "middleton", "thibs", "memphis grizzlies",
+    "chapman", "shai", "donovan mitchell", "drummond",
+    "trae young", "76ers", "doc rivers", "demar derozan",
+    "aaron gordon", "edey", "reggie jackson",
+    "kobe", "kobe bryant",
+    "bronny", "bronny james",
+    "ayton", "deandre ayton",
+    "memphis grizzlies",
+    "caruso", "alex caruso",
 ]
 
 SPORTS_NFL = [
@@ -130,6 +145,16 @@ SPORTS_NFL = [
     "goff", "herbert", "carr", "wentz", "justin fields", "fields",
     "caleb williams", "bo nix", "jordan love", "diggs",
     "victory monday", "football",
+    "panthers", "gopackgo", "baker", "mac jones", "pats",
+    "watson", "deebo", "jimmy g", "jimmyg", "trevor lawrence",
+    "bucciovertimechallenge", "vegasborn",
+    "philly", "jalen hurts", "jalen",
+    "daniel jones", "zeke", "aj brown", "cam newton", "camnewton",
+    "flacco", "joe flacco", "kirk cousins", "kirkcousins",
+    "pro bowl", "probowl",
+    "harbaugh", "go birds", "jameis", "bryce young",
+    "matt ryan", "jerry jones", "hookem", "godawgs",
+    "buckeyes", "washington commanders", "heisman",
 ]
 
 SPORTS_MLB = [
@@ -147,6 +172,8 @@ SPORTS_MLB = [
     "nestor", "altuve", "rizzo", "degrom", "mookie", "tatis",
     "machado", "buehler", "kershaw",
     "baseball",
+    "hader", "lindor", "rodon", "wheeler", "scherzer",
+    "aaron nola", "snell",
 ]
 
 SPORTS_NHL = [
@@ -158,6 +185,8 @@ SPORTS_NHL = [
     "stars", "ducks", "sharks", "sabres", "senators", "devils",
     "islanders", "kraken", "golden knights",
     "hockey",
+    "mcdavid", "vegas born", "vegasborn",
+    "game 7",
 ]
 
 SPORTS_SOCCER = [
@@ -179,6 +208,14 @@ SPORTS_SOCCER = [
     "benzema", "grealish", "xhaka", "martinelli", "saka",
     "sancho", "casemiro", "lautaro", "sterling", "harry kane",
     "soccer", "futbol",
+    "bayern", "foden", "leeds", "dembele", "antony",
+    "mctominay", "tuchel",
+    "onana", "werner", "lukaku",
+    "klopp", "poch", "pochettino", "burnley", "brighton",
+    "brentford", "nunez", "httc", "gobolts",
+    "argentina", "brazil", "madrid", "spain", "england", "london",
+    "ligue 1",
+    "xavi", "pogba", "paul pogba",
 ]
 
 SPORTS_COLLEGE = [
@@ -189,9 +226,19 @@ SPORTS_COLLEGE = [
     "michigan", "clemson", "arkansas", "ohio state", "ohiostate",
     "texas", "baylor", "oregon", "rutgers", "mizzou", "louisville",
     "colorado", "purdue", "gonzaga", "kansas", "kentucky", "duke",
-    "uconn", "creighton", "houston", "tennessee",
+    "uconn", "creighton", "houston", "tennessee", "geno", "geno auriemma",
     "rolltide", "roll tide", "warnation",
     "kubball", "iubb",
+    "ole miss", "olemiss", "penn state", "pennstate",
+    "vandy", "vanderbilt", "nc state", "ncstate",
+    "nebraska", "stanford", "game day", "gameday",
+    "syracuse", "dabo", "godawgs", "hookem",
+    "brian kelly", "briankelly", "ryan day", "ryanday",
+    "unlv", "south carolina", "southcarolina",
+    "game 6",
+    # State names used as college team shorthand
+    "arizona", "utah", "florida", "wisconsin", "oklahoma",
+    "ohio", "georgia", "saban", "nick saban",
 ]
 
 SPORTS_WOMENS = [
@@ -204,6 +251,7 @@ SPORTS_WOMENS = [
     "ncaawomen", "womensbasketball", "womens basketball",
     "womenssoccer", "womens soccer",
     "serena", "serena williams",
+    "paige", "paige bueckers",
     "naomi osaka", "osaka",
     "simone biles", "biles",
 ]
@@ -223,6 +271,8 @@ SPORTS_OTHER = [
     "djokovic", "nadal", "federer", "alcaraz",
     # Olympics
     "olympics", "teamusa",
+    "rory", "rory mcilroy",
+    "lando", "lando norris",
     # Horse racing
     "kentuckyderby", "kentucky derby",
 ]
@@ -237,6 +287,8 @@ COMBAT_SPORTS = [
     "spence", "haney", "ryan garcia", "devin haney",
     "fight night", "fight week", "ppv",
     "knockout", "submission",
+    "dwcs", "izzy", "israel adesanya",
+    "floyd", "floyd mayweather",
 ]
 
 REALITY_TV = [
@@ -260,6 +312,7 @@ REALITY_TV = [
     "areYouTheOne", "ayto",
     "bling empire", "blingempire",
     # Housewife adjacent / Bravo
+    "married2med", "married to med",
     "vanderpump", "pumprules", "pump rules",
     "belowdeck", "below deck",
     "southerncharm",
@@ -292,7 +345,7 @@ REALITY_TV = [
     "dancemoms",
     "littlepeople",
     # Celebrity / talk reality
-    "thetraitors",
+    "thetraitors", "thetraitorsus", "traitors us",
     "thekarDAShians", "kardashians",
     "keeping up",
     "lamh",
@@ -308,6 +361,10 @@ REALITY_TV = [
     "ghostadventures",
     "alaskan bush",
     "90daytheotherway",
+    "joseline", "joselines cabaret",
+    "loveislandusa", "love island usa",
+    "survivor45", "survivor46",
+    "raising kanan", "raisingkanan",
 ]
 
 ENTERTAINMENT = [
@@ -361,6 +418,14 @@ ENTERTAINMENT = [
     "zach bryan", "zachbryan",
     "rihanna", "ariana",
     "kanye", "ye",
+    "carti", "playboi carti",
+    "diddy", "sean combs",
+    "usher",
+    "billie", "megan thee stallion", "megan",
+    "durk", "lil durk", "quavo", "boosie", "meek mill", "meek",
+    "doja", "halle bailey", "halle",
+    "verzuz", "vince staples",
+    "911onFOX", "911 on fox", "911onfox",
     "mostRequestedlive",
     "snkrs",
     # Celebrity
@@ -368,6 +433,53 @@ ENTERTAINMENT = [
     "chris rock", "will smith",
     "johnny depp", "amber heard",
     "jada",
+    # More musicians / celebs
+    "beyonce", "beyonc",
+    "zendaya",
+    "eminem", "slim shady",
+    "disney", "disneyland", "disneyplus",
+    "lil wayne", "wayne",
+    "snoop", "snoop dogg",
+    "jack harlow", "jackharlow",
+    "j cole", "jcole",
+    "rod wave", "rodwave",
+    "alec baldwin", "alecbaldwin",
+    "jeezy", "young jeezy",
+    "star wars", "starwars",
+    "mario", "super mario",
+    "gta", "grand theft auto",
+    "ticketmaster",
+    "spotify",
+    "bluesky",
+    "metgala", "met gala",
+    "friday the 13th",
+    "wandavision", "wanda vision",
+    "xmen", "x-men", "xmen97",
+    "ahsoka",
+    "better call saul", "bettercallsaul",
+    "cassie",
+    "jon stewart", "jonstewarrt",
+    "bill maher", "billmaher",
+    "don lemon", "donlemon",
+    "chuck todd", "chucktodd",
+    "tariq",
+    # Music
+    "lorde",
+    "kid rock", "kidrock",
+    "coachella",
+    "normani",
+    "chris brown", "chrisbrown",
+    "adele",
+    "cudi", "kid cudi",
+    "benito", "bad bunny benito",
+    "oprah",
+    # Movies / TV
+    "joker",
+    "superman",
+    "jack black", "jackblack",
+    "loki",
+    "she hulk", "shehulk",
+    "insecure hbo", "insecurehbo",
 ]
 
 TAYLOR_SWIFT = [
@@ -381,6 +493,7 @@ TAYLOR_SWIFT = [
     "lover", "reputation", "fearless",
     "1989taylorsversion", "themanmv",
     "travis kelce taylor", "tayvis",
+    "swift",
 ]
 
 FANDOM = [
@@ -399,8 +512,11 @@ FANDOM = [
     "namjoon", "rm",
     "jimin", "park jimin",
     "taehyung", "v bts",
-    "jin", "suga", "yoongi", "min yoongi",
+    "jin", "seokjin", "suga", "yoongi", "min yoongi",
+    "joon", "namjoon",
+    "soobin", "hoseok", "gege",
     "yeonjun",
+    "jaehyun", "taeyong",
     # K-pop generic
     "kpop", "k-pop", "idol", "comeback",
     # Anime
@@ -446,6 +562,8 @@ TECH_GAMING = [
     "nvidia", "amd",
     "apple", "iphone", "wwdc",
     "google", "meta", "amazon", "microsoft",
+    "gta6", "gta 6",
+    "boeing",
 ]
 
 MANOSPHERE = [
@@ -467,6 +585,7 @@ MANOSPHERE = [
     "hypergamy",
     "manosphere",
     "based and redpilled",
+    "rogan",
 ]
 
 LGBTQ_SOCIAL = [
@@ -541,7 +660,14 @@ HOLIDAYS = [
     "mothersday", "mothers day",
     "fathersday", "fathers day",
     "happyholidays",
-    # Easter already in religious
+    "april fools", "aprilfools",
+    "black friday", "blackfriday",
+    "santa", "santa claus",
+    "st patrick", "stpatrick", "stpatricksday",
+    "juneteenth",
+    "earth day", "earthday",
+    "election day", "electionday",
+    "feliz navidad", "feliznavidad", "navidad",
 ]
 
 TRUE_CRIME = [
@@ -591,6 +717,64 @@ POLITICS = [
     "bernie", "bernie sanders",
     "buttigieg", "pete buttigieg",
     "morningjoe",
+    "liz cheney", "lizcheney",
+    "jim jordan", "jimjordan",
+    "ted cruz", "tedcruz",
+    "jerome powell", "powell",
+    "alito", "vivek", "vivek ramaswamy",
+    "antifa", "geraldo",
+    "tucker", "tucker carlson", "tuckercarlson",
+    # Figures
+    "fauci", "dr fauci", "anthony fauci",
+    "mccarthy", "kevin mccarthy",
+    "fetterman", "john fetterman",
+    "tim scott", "timscott",
+    "nikki haley", "nikkihaley",
+    "george santos", "georgesantos",
+    "mitch mcconnell", "mitchmcconnell",
+    "clarence thomas", "clarencethomas",
+    "paul ryan", "paulryan",
+    "hillary", "hillary clinton", "hillaryclinton",
+    "rudy", "rudy giuliani", "rudygiuliani",
+    "jack smith", "jacksmith",
+    "bannon", "steve bannon",
+    "sinema", "kyrsten sinema",
+    "lindsey graham", "lindseygraham",
+    "barr", "william barr", "bill barr",
+    "barron", "barron trump",
+    "ben shapiro", "benshapiro",
+    "hannity", "sean hannity",
+    "alex jones", "alexjones",
+    # Events/topics
+    "capitol", "january 6", "jan 6",
+    "ar-15", "ar15",
+    "george floyd", "georgefloyd",
+    "epstein", "jeffrey epstein",
+    "secret service", "secretservice",
+    "rafah", "rafah crossing",
+    "afghanistan",
+    "dems", "republicans",
+    "florida man",
+    "bluesky",
+    # More figures
+    "kavanaugh", "brett kavanaugh",
+    "gaetz", "matt gaetz", "mattgaetz",
+    "beto", "beto orourke",
+    "white house", "whitehouse",
+    "democrats",
+    "hunter", "hunter biden",
+    "melania", "melania trump",
+    "the cdc", "cdc",
+    "tulsi", "tulsi gabbard",
+    "cuomo", "andrew cuomo",
+    "kamala",
+    "mar-a-lago", "mar a lago", "maralago",
+    "proud boys", "proudboys",
+    "sandy hook", "sandyhook",
+    "dark brandon", "darkbrandon",
+    "candace", "candace owens",
+    "susan collins", "susancollins",
+    "constitution",
 ]
 
 NEWS_EVENTS = [
@@ -604,6 +788,15 @@ NEWS_EVENTS = [
     "tsunami",
     # Breaking
     "rip", "pray for",
+    "breaking news", "breakingnews",
+    "memorial", "never forget", "neverforget",
+    "international womens day", "internationalwomensday",
+    "giving tuesday", "givingtuesday",
+    "canada", "mexico",
+    "uvalde",
+    "fema",
+    "newsmax",
+    "fox news", "foxnews",
 ]
 
 SOCIAL_FILLER = [
@@ -655,6 +848,8 @@ SOCIAL_FILLER = [
     "ootd", "selfie",
     "venmome", "venmo me",
     "notifications",
+    "taco tuesday", "tacotuesady", "new month",
+    "tuesdaymotivaton", "saturdayblessings",
 ]
 
 

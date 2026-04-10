@@ -55,8 +55,19 @@ TEST_CATS = [
     "sports_mlb", "sports_nhl", "sports_soccer", "sports_college",
     "sports_womens", "sports_other", "reality_tv", "entertainment",
     "taylor_swift", "fandom", "tech_gaming", "lgbtq_social",
-    "religious", "musk_twitter", "politics", "news_events",
+    "religious", "news_politics",
 ]
+
+# Merged categories: combine Twitter shares and Reddit controls before DiD
+MERGED_CATS = {
+    "news_politics": {
+        "sources":  ["news_events", "politics"],
+        "label":    "News & Politics",
+        "controls": ["worldnews", "news", "politics", "PoliticalDiscussion",
+                     "conservative", "republican", "democrats", "Liberal",
+                     "progressive", "libertarian", "NeutralPolitics"],
+    },
+}
 
 
 # ── 1. TWITTER: daily category shares ────────────────────────────────────────
@@ -75,7 +86,13 @@ def build_twitter_panel() -> pd.DataFrame:
     daily_total = daily_cat.sum(axis=1)
 
     for cat in TEST_CATS:
-        if cat not in daily_cat:
+        # For merged cats, sum their source categories
+        if cat in MERGED_CATS:
+            sources = MERGED_CATS[cat]["sources"]
+            daily_cat[cat] = sum(
+                daily_cat[s] if s in daily_cat else 0 for s in sources
+            )
+        elif cat not in daily_cat:
             daily_cat[cat] = 0
 
     # Share = category count / total topics that day
@@ -103,10 +120,14 @@ CAT_TO_SUBREDDIT = {
     "tech_gaming":    ["gaming"],
     "lgbtq_social":   ["lgbt"],
     "news_events":    ["worldnews"],
-    "musk_twitter":   ["worldnews"],
+    "musk_twitter":   ["Twitter", "elonmusk", "technology"],
+    "entertainment":  ["television", "movies", "Music"],
+    "sports_other":   ["formula1", "tennis", "golf"],
+    "politics":       ["politics", "PoliticalDiscussion", "conservative", "republican",
+                       "democrats", "Liberal", "progressive", "libertarian", "NeutralPolitics"],
     "sports_womens":  ["wnba", "NWSL"],
     # No matched sub — will fall back to generic political baseline:
-    # sports_other, manosphere, religious, true_crime, politics
+    # religious, manosphere, true_crime
 }
 
 
@@ -125,6 +146,18 @@ def build_reddit_controls() -> dict:
     if os.path.exists(cat_path):
         rc = pd.read_csv(cat_path, sep="\t", parse_dates=["date"])
         rc = rc[(rc["date"] >= PRE_START) & (rc["date"] <= POST_END)]
+        # Add merged category controls
+        for cat, info in MERGED_CATS.items():
+            subs = info["controls"]
+            sub_data = rc[rc["subreddit"].isin(subs)]
+            if sub_data.empty:
+                continue
+            daily = (sub_data.groupby(sub_data["date"].dt.date)["n_posts"]
+                     .sum().rename_axis("date"))
+            daily.index = pd.to_datetime(daily.index)
+            daily = daily.reindex(date_idx, fill_value=0).astype(float)
+            cat_controls[cat] = daily
+
         for cat, subs in CAT_TO_SUBREDDIT.items():
             sub_data = rc[rc["subreddit"].isin(subs)]
             if sub_data.empty:
@@ -179,10 +212,10 @@ def run_category_did(tw_share: pd.DataFrame,
 
         # Use matched subreddit if available, else generic political baseline
         if cat in cat_controls:
-            rd_norm   = normalize(cat_controls[cat], pre_mask)
-            ctrl_label = CAT_TO_SUBREDDIT[cat]
+            rd_norm    = normalize(cat_controls[cat], pre_mask)
+            ctrl_label = MERGED_CATS[cat]["controls"] if cat in MERGED_CATS else CAT_TO_SUBREDDIT.get(cat, ["unknown"])
         else:
-            rd_norm   = generic_norm
+            rd_norm    = generic_norm
             ctrl_label = ["generic_political"]
 
         # Stack into panel: one row per (date, unit)
@@ -222,7 +255,7 @@ def run_category_did(tw_share: pd.DataFrame,
 
             results.append({
                 "category":    cat,
-                "label":       DISPLAY_GROUPS.get(cat, cat),
+                "label":       MERGED_CATS[cat]["label"] if cat in MERGED_CATS else DISPLAY_GROUPS.get(cat, cat),
                 "control":     "+".join(ctrl_label),
                 "tw_pre_dev":  tw_pre,
                 "tw_post_dev": tw_post,
