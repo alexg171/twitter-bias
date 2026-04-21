@@ -45,8 +45,8 @@ ALL_CATS = [c for c, _ in CATEGORY_ORDER] + ["other"]
 MALE_CODED   = {"wrestling", "combat_sports", "sports_nba", "sports_nfl",
                 "sports_mlb", "sports_nhl", "sports_other", "sports_college",
                 "sports_soccer", "tech_gaming", "manosphere"}
-FEMALE_CODED = {"reality_tv", "taylor_swift", "fandom",
-                "sports_womens", "lgbtq_social"}
+FEMALE_CODED = {"reality_tv", "taylor_swift", "fandom", "sports_womens"}
+# Removed: lgbtq_social (too noisy/event-driven)
 NEUTRAL_CODED = {"entertainment", "religious", "musk_twitter",
                  "holidays", "true_crime", "news_events",
                  "politics", "social_filler", "other"}

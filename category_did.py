@@ -49,13 +49,13 @@ plt.rcParams.update({
     "axes.spines.top": False, "axes.spines.right": False,
 })
 
-# Categories to test (skip tiny ones)
+# Categories to test
+# Dropped: lgbtq_social (event-driven spikes, no common rhythm with control)
 TEST_CATS = [
     "wrestling", "combat_sports", "sports_nba", "sports_nfl",
     "sports_mlb", "sports_nhl", "sports_soccer", "sports_college",
     "sports_womens", "sports_other", "reality_tv", "entertainment",
-    "taylor_swift", "fandom", "tech_gaming", "lgbtq_social",
-    "religious", "news_politics",
+    "taylor_swift", "fandom", "tech_gaming", "religious", "news_politics",
 ]
 
 # Merged categories: combine Twitter shares and Reddit controls before DiD

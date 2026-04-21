@@ -152,6 +152,7 @@ SPORTS_NFL = [
     "daniel jones", "zeke", "aj brown", "cam newton", "camnewton",
     "flacco", "joe flacco", "kirk cousins", "kirkcousins",
     "pro bowl", "probowl",
+    "askfft", "#askfft",
     "harbaugh", "go birds", "jameis", "bryce young",
     "matt ryan", "jerry jones", "hookem", "godawgs",
     "buckeyes", "washington commanders", "heisman",
@@ -174,6 +175,7 @@ SPORTS_MLB = [
     "baseball",
     "hader", "lindor", "rodon", "wheeler", "scherzer",
     "aaron nola", "snell",
+    "bryce harper", "bryceharper",
 ]
 
 SPORTS_NHL = [
@@ -216,6 +218,7 @@ SPORTS_SOCCER = [
     "argentina", "brazil", "madrid", "spain", "england", "london",
     "ligue 1",
     "xavi", "pogba", "paul pogba",
+    "rodri",
 ]
 
 SPORTS_COLLEGE = [
@@ -239,6 +242,7 @@ SPORTS_COLLEGE = [
     # State names used as college team shorthand
     "arizona", "utah", "florida", "wisconsin", "oklahoma",
     "ohio", "georgia", "saban", "nick saban",
+    "pac-12", "pac12",
 ]
 
 SPORTS_WOMENS = [
@@ -252,6 +256,7 @@ SPORTS_WOMENS = [
     "womenssoccer", "womens soccer",
     "serena", "serena williams",
     "paige", "paige bueckers",
+    "sha'carri", "shacarri", "sha carri", "shacarri richardson",
     "naomi osaka", "osaka",
     "simone biles", "biles",
 ]
@@ -273,6 +278,8 @@ SPORTS_OTHER = [
     "olympics", "teamusa",
     "rory", "rory mcilroy",
     "lando", "lando norris",
+    "daytona500", "daytona 500",
+    "espn",
     # Horse racing
     "kentuckyderby", "kentucky derby",
 ]
@@ -290,6 +297,8 @@ COMBAT_SPORTS = [
     "dwcs", "izzy", "israel adesanya",
     "floyd", "floyd mayweather",
 ]
+
+
 
 REALITY_TV = [
     # Housewives franchise
@@ -463,6 +472,14 @@ ENTERTAINMENT = [
     "don lemon", "donlemon",
     "chuck todd", "chucktodd",
     "tariq",
+    "queen radio", "queenradio",
+    "the bad batch", "thebadbatch",
+    "the acolyte", "theacolyte",
+    "bet awards", "betawards",
+    "colbert", "stephen colbert",
+    "jonathan majors", "jonathanmajors",
+    "spiderman no way home", "spidermannowayhome",
+    "ted lasso", "tedlasso",
     # Music
     "lorde",
     "kid rock", "kidrock",
@@ -470,6 +487,8 @@ ENTERTAINMENT = [
     "normani",
     "chris brown", "chrisbrown",
     "adele",
+    "shakira",
+    "mostrequestedlive", "most requested live",
     "cudi", "kid cudi",
     "benito", "bad bunny benito",
     "oprah",
@@ -517,6 +536,7 @@ FANDOM = [
     "soobin", "hoseok", "gege",
     "yeonjun",
     "jaehyun", "taeyong",
+    "taemin", "baekhyun",
     # K-pop generic
     "kpop", "k-pop", "idol", "comeback",
     # Anime
@@ -564,6 +584,8 @@ TECH_GAMING = [
     "google", "meta", "amazon", "microsoft",
     "gta6", "gta 6",
     "boeing",
+    "$gtai", "gtai",
+    "$bccoin", "bccoin",
 ]
 
 MANOSPHERE = [
@@ -609,6 +631,8 @@ LGBTQ_SOCIAL = [
     # Awareness
     "mentalhealth", "mental health awareness",
     "worldmentalhealthday",
+    "dr king", "drking", "dr. king", "dr martin luther king", "mlk", "martin luther king",
+    "womens history month", "womenshistorymonth",
 ]
 
 RELIGIOUS = [
@@ -626,6 +650,8 @@ RELIGIOUS = [
     "jesus christ is alive",
     "good friday",
     "holy week", "holyweek",
+    "vatican",
+    "he is risen", "heisrisen",
 ]
 
 MUSK_TWITTER = [
@@ -771,6 +797,18 @@ POLITICS = [
     "mar-a-lago", "mar a lago", "maralago",
     "proud boys", "proudboys",
     "sandy hook", "sandyhook",
+    "marco", "marco rubio", "marcorubio",
+    "rubio",
+    "josh hawley", "joshhawley",
+    "lindsey", "lindsey graham", "lindseygraham",
+    "herschel walker", "herschelwalker",
+    "stacey abrams", "staceyabrams",
+    "michelle obama", "michelleobama",
+    "ivanka", "ivanka trump",
+    "bill clinton", "billclinton",
+    "mr president", "mrpresident",
+    "truth social", "truthsocial",
+    "dr king", "dr martin luther king", "mlk",
     "dark brandon", "darkbrandon",
     "candace", "candace owens",
     "susan collins", "susancollins",
@@ -797,6 +835,12 @@ NEWS_EVENTS = [
     "fema",
     "newsmax",
     "fox news", "foxnews",
+    "taliban",
+    "isis",
+    "iraq",
+    "netanyahu",
+    "cuba", "venezuela",
+    "zuckerberg", "mark zuckerberg",
 ]
 
 SOCIAL_FILLER = [
@@ -850,6 +894,10 @@ SOCIAL_FILLER = [
     "notifications",
     "taco tuesday", "tacotuesady", "new month",
     "tuesdaymotivaton", "saturdayblessings",
+    "portfolioday", "portfolio day",
+    "whychime", "why i chime", "whyichime",
+    "cashappfriday", "cash app friday",
+    "venmoitforward", "venmo it forward",
 ]
 
 

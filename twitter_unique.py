@@ -56,6 +56,17 @@ LABEL_ALIASES = {
     "wwe":             "wrestling",
     "social":          "social_filler",
     "filler":          "social_filler",
+    "social filler":   "social_filler",
+    "ads":             "social_filler",
+    "sponsored":       "social_filler",
+    "nascar":          "sports_other",
+    "sports":          "sports_other",
+    "woke":            "lgbtq_social",
+    "woke maybe":      "lgbtq_social",
+    "news politics":   "news_events",
+    "late night":      "entertainment",
+    "lindsey graham?": "politics",
+    "zukerberg facebook idk": "news_events",
     "books":           "politics",   # Susan Collins edge case
 }
 
