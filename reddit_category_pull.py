@@ -10,58 +10,14 @@ Output: out/reddit_category.tsv
 import os, time, requests
 from datetime import datetime
 import pandas as pd
+import sys
+sys.path.insert(0, ".")
+from category_subreddit_mapping import SUBREDDIT_CATEGORY
 
 START    = "2020-10-27"
 END      = "2024-10-27"
 OUT_FILE = "out/reddit_category.tsv"
 API_URL  = "https://arctic-shift.photon-reddit.com/api/time_series"
-
-SUBREDDIT_CATEGORY = {
-    "SquaredCircle":      "wrestling",
-    "nba":                "sports_nba",
-    "nfl":                "sports_nfl",
-    "baseball":           "sports_mlb",
-    "hockey":             "sports_nhl",
-    "soccer":             "sports_soccer",
-    "CFB":                "sports_college",
-    "MMA":                "combat_sports",
-    "BravoRealHousewives":"reality_tv",
-    "LoveIsBlind":        "reality_tv",
-    "LoveIslandTV":       "reality_tv",
-    "thebachelor":        "reality_tv",
-    "survivor":           "reality_tv",
-    "BigBrother":         "reality_tv",
-    "Vanderpumprules":    "reality_tv",
-    "MAFS_TV":            "reality_tv",
-    "90DayFiance":        "reality_tv",
-    "television":         "entertainment",
-    "TaylorSwift":        "taylor_swift",
-    "anime":              "fandom",
-    "kpop":               "fandom",
-    "gaming":             "tech_gaming",
-    "lgbt":               "lgbtq_social",
-    "worldnews":          "news_events",
-    "wnba":               "sports_womens",
-    "NWSL":               "sports_womens",
-    "Twitter":            "musk_twitter",
-    "elonmusk":           "musk_twitter",
-    "technology":         "musk_twitter",
-    "movies":             "entertainment",
-    "Music":              "entertainment",
-    "formula1":           "sports_other",
-    "tennis":             "sports_other",
-    "golf":               "sports_other",
-    "politics":            "politics",
-    "PoliticalDiscussion": "politics",
-    "conservative":        "politics",
-    "republican":          "politics",
-    "democrats":           "politics",
-    "Liberal":             "politics",
-    "progressive":         "politics",
-    "libertarian":         "politics",
-    "NeutralPolitics":     "politics",
-    "news":                "news_events",
-}
 
 os.makedirs("out", exist_ok=True)
 

@@ -169,7 +169,7 @@ CATEGORIES = [
     },
     {
         "key":        "lgbtq_social",
-        "label":      "LGBTQ+ & Social Justice",
+        "label":      "Social Justice",
         "pct_male":   32,
         "age_label":  "18–34",
         "age_median": 26,

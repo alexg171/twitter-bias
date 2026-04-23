@@ -37,6 +37,7 @@ import statsmodels.formula.api as smf
 warnings.filterwarnings("ignore")
 sys.path.insert(0, ".")
 from category_lexicon import classify_category, DISPLAY_GROUPS, CAT_COLORS
+from category_subreddit_mapping import CAT_TO_SUBREDDIT
 
 TREATMENT  = pd.Timestamp("2022-10-27")
 PRE_START  = pd.Timestamp("2020-10-27")
@@ -51,11 +52,13 @@ plt.rcParams.update({
 
 # Categories to test
 # Dropped: lgbtq_social (event-driven spikes, no common rhythm with control)
+#          religious   (no matched subreddit, generic fallback, not a headline result)
+# "sports_other", "tech_gaming",
 TEST_CATS = [
     "wrestling", "combat_sports", "sports_nba", "sports_nfl",
     "sports_mlb", "sports_nhl", "sports_soccer", "sports_college",
-    "sports_womens", "sports_other", "reality_tv", "entertainment",
-    "taylor_swift", "fandom", "tech_gaming", "religious", "news_politics",
+    "sports_womens",  "reality_tv", "entertainment",
+    "taylor_swift", "fandom",  "news_politics",
 ]
 
 # Merged categories: combine Twitter shares and Reddit controls before DiD
@@ -101,35 +104,6 @@ def build_twitter_panel() -> pd.DataFrame:
     return share
 
 
-# Matched subreddit(s) per Twitter category
-CAT_TO_SUBREDDIT = {
-    "wrestling":      ["SquaredCircle"],
-    "combat_sports":  ["MMA"],
-    "sports_nba":     ["nba"],
-    "sports_nfl":     ["nfl"],
-    "sports_mlb":     ["baseball"],
-    "sports_nhl":     ["hockey"],
-    "sports_soccer":  ["soccer"],
-    "sports_college": ["CFB"],
-    "reality_tv":     ["BravoRealHousewives", "LoveIslandTV", "thebachelor",
-                       "survivor", "BigBrother", "Vanderpumprules",
-                       "MAFS_TV", "90DayFiance"],
-    "entertainment":  ["television"],
-    "taylor_swift":   ["TaylorSwift"],
-    "fandom":         ["anime", "kpop"],
-    "tech_gaming":    ["gaming"],
-    "lgbtq_social":   ["lgbt"],
-    "news_events":    ["worldnews"],
-    "musk_twitter":   ["Twitter", "elonmusk", "technology"],
-    "entertainment":  ["television", "movies", "Music"],
-    "sports_other":   ["formula1", "tennis", "golf"],
-    "politics":       ["politics", "PoliticalDiscussion", "conservative", "republican",
-                       "democrats", "Liberal", "progressive", "libertarian", "NeutralPolitics"],
-    "sports_womens":  ["wnba", "NWSL"],
-    # No matched sub — will fall back to generic political baseline:
-    # religious, manosphere, true_crime
-}
-
 
 # ── 2. REDDIT: per-category and generic baselines ────────────────────────────
 
@@ -168,29 +142,28 @@ def build_reddit_controls() -> dict:
             daily = daily.reindex(date_idx, fill_value=0).astype(float)
             cat_controls[cat] = daily
 
-    # Generic political baseline (fallback)
-    print("Building Reddit controls …")
-    rd = pd.read_csv("out/reddit_trending.tsv", sep="\t", parse_dates=["date"])
-    rd = rd[(rd["date"] >= PRE_START) & (rd["date"] <= POST_END)]
-    generic = rd.groupby(rd["date"].dt.date).size().rename_axis("date")
-    generic.index = pd.to_datetime(generic.index)
-    generic = generic.reindex(date_idx, fill_value=0).astype(float)
-
     matched = len(cat_controls)
     total   = len(TEST_CATS)
     print(f"  Matched subreddits: {matched}/{total} categories")
-    print(f"  Fallback (generic political): {total - matched} categories")
 
-    return cat_controls, generic
+    return cat_controls
 
 
-# ── 3. NORMALIZE to % deviation from pre-treatment mean ──────────────────────
+# ── 3. LOG-DEVIATION NORMALIZATION ───────────────────────────────────────────
+# Log-transform each series, then demean by its own pre-treatment log-mean.
+# Result: both Twitter and Reddit start at 0 and are expressed in log-deviation
+# units (≈ % change for small values, better behaved for large swings).
+# This keeps both series on the same scale before stacking into the DiD panel.
 
-def normalize(series: pd.Series, pre_mask: np.ndarray) -> pd.Series:
-    pre_mean = series[pre_mask].mean()
-    if pre_mean == 0 or np.isnan(pre_mean):
+def log_normalize(series: pd.Series, pre_mask: np.ndarray) -> pd.Series:
+    """log(y + small_constant) demeaned by pre-period log mean."""
+    # Choose constant relative to series magnitude
+    const = 1e-4 if series.max() <= 1 else 1.0   # share vs count
+    log_s = np.log(series.clip(lower=0) + const)
+    log_pre_mean = log_s[pre_mask].mean()
+    if np.isnan(log_pre_mean):
         return pd.Series(np.nan, index=series.index)
-    return (series - pre_mean) / pre_mean * 100
+    return log_s - log_pre_mean
 
 
 # ── 4. RUN DiD PER CATEGORY ──────────────────────────────────────────────────
@@ -203,64 +176,63 @@ def run_category_did(tw_share: pd.DataFrame,
     pre_mask  = np.array(all_dates < TREATMENT)
     post_mask = np.array(all_dates >= TREATMENT)
 
-    generic_norm = normalize(generic_baseline, pre_mask)
+    generic_lnorm = log_normalize(generic_baseline, pre_mask)
 
     results = []
     for cat in TEST_CATS:
-        tw_series = tw_share[cat]
-        tw_norm   = normalize(tw_series, pre_mask)
+        tw_lnorm = log_normalize(tw_share[cat], pre_mask)
 
         # Use matched subreddit if available, else generic political baseline
         if cat in cat_controls:
-            rd_norm    = normalize(cat_controls[cat], pre_mask)
+            rd_lnorm   = log_normalize(cat_controls[cat], pre_mask)
             ctrl_label = MERGED_CATS[cat]["controls"] if cat in MERGED_CATS else CAT_TO_SUBREDDIT.get(cat, ["unknown"])
         else:
-            rd_norm    = generic_norm
+            rd_lnorm   = generic_lnorm
             ctrl_label = ["generic_political"]
 
         # Stack into panel: one row per (date, unit)
         tw_df = pd.DataFrame({
-            "date":      all_dates,
-            "deviation": tw_norm.values,
-            "twitter":   1,
-            "post":      post_mask.astype(int),
+            "date":    all_dates,
+            "log_dev": tw_lnorm.values,
+            "twitter": 1,
+            "post":    post_mask.astype(int),
         })
         rd_df = pd.DataFrame({
-            "date":      all_dates,
-            "deviation": rd_norm.values,
-            "twitter":   0,
-            "post":      post_mask.astype(int),
+            "date":    all_dates,
+            "log_dev": rd_lnorm.values,
+            "twitter": 0,
+            "post":    post_mask.astype(int),
         })
         panel = pd.concat([tw_df, rd_df], ignore_index=True)
         panel["did"] = panel["twitter"] * panel["post"]
-        panel = panel.dropna(subset=["deviation"])
+        panel = panel.dropna(subset=["log_dev"])
 
-        if panel["deviation"].std() == 0 or len(panel) < 50:
+        if panel["log_dev"].std() == 0 or len(panel) < 50:
             continue
 
         try:
             model = smf.ols(
-                "deviation ~ twitter + post + did", data=panel
+                "log_dev ~ twitter + post + did", data=panel
             ).fit(cov_type="HC3")
 
             coef  = model.params["did"]
             pval  = model.pvalues["did"]
             ci_lo, ci_hi = model.conf_int().loc["did"]
 
-            # Raw pre/post means
-            tw_pre  = tw_norm[pre_mask].mean()
-            tw_post = tw_norm[post_mask].mean()
-            rd_pre  = rd_norm[pre_mask].mean()
-            rd_post = rd_norm[post_mask].mean()
+            # Pre/post log-deviation means per platform
+            tw_pre  = tw_lnorm[pre_mask].mean()
+            tw_post = tw_lnorm[post_mask].mean()
+            rd_pre  = rd_lnorm[pre_mask].mean()
+            rd_post = rd_lnorm[post_mask].mean()
 
             results.append({
                 "category":    cat,
                 "label":       MERGED_CATS[cat]["label"] if cat in MERGED_CATS else DISPLAY_GROUPS.get(cat, cat),
                 "control":     "+".join(ctrl_label),
-                "tw_pre_dev":  tw_pre,
-                "tw_post_dev": tw_post,
-                "rd_pre_dev":  rd_pre,
-                "rd_post_dev": rd_post,
+                "tw_pre_ldev": tw_pre,
+                "tw_post_ldev":tw_post,
+                "rd_pre_ldev": rd_pre,
+                "rd_post_ldev":rd_post,
                 "did_coef":    coef,
                 "ci_lo":       ci_lo,
                 "ci_hi":       ci_hi,
@@ -285,21 +257,22 @@ def _stars(p):
 
 def print_results(res: pd.DataFrame):
     print("\n" + "="*90)
-    print("CATEGORY DiD RESULTS")
-    print("b3 = Twitter category deviation ABOVE/BELOW what Reddit organic baseline predicts")
-    print("Positive b3 = Twitter algorithmically amplified; Negative = suppressed")
+    print("CATEGORY DiD RESULTS  (log-deviation model)")
+    print("outcome = log(y) − log_pre_mean  →  both series start at 0, same scale")
+    print("b3 = log-deviation DiD ≈ % effect; positive = amplified, negative = suppressed")
     print("="*90)
-    hdr = (f"{'Category':<36} {'TW pre':>7} {'TW post':>7} "
+    hdr = (f"{'Category':<36} {'TW pre':>8} {'TW post':>8} "
            f"{'DiD b3':>9} {'p':>7}      {'95% CI'}")
     print(hdr)
     print("-"*90)
     for _, r in res.sort_values("did_coef", ascending=False).iterrows():
-        ci = f"[{r['ci_lo']:+.1f}, {r['ci_hi']:+.1f}]"
-        print(f"{r['label']:<36} {r['tw_pre_dev']:>+7.1f} {r['tw_post_dev']:>+7.1f} "
-              f"{r['did_coef']:>+9.2f} {r['pval']:>7.3f}{r['stars']:>5}   {ci}")
+        ci = f"[{r['ci_lo']:+.3f}, {r['ci_hi']:+.3f}]"
+        print(f"{r['label']:<36} {r['tw_pre_ldev']:>+8.3f} {r['tw_post_ldev']:>+8.3f} "
+              f"{r['did_coef']:>+9.3f} {r['pval']:>7.3f}{r['stars']:>5}   {ci}")
     print("="*90)
-    print("Note: deviations expressed as % from own pre-treatment mean.")
-    print("      Reddit control = matched category subreddit (or generic political fallback).")
+    print("Note: outcome = log(y + c) − pre-period log mean (c=1e-4 for shares, 1 for counts).")
+    print("      β3 ≈ log-point change; approx % for small values.")
+    print("      Reddit control = matched category subreddit (or generic fallback).")
 
 
 # ── 6. PLOT ──────────────────────────────────────────────────────────────────
@@ -332,12 +305,12 @@ def plot_results(res: pd.DataFrame):
 
     ax.axvline(0, color="black", linewidth=0.9)
     ax.set_xlabel(
-        "DiD coefficient β3 (% deviation above/below Reddit baseline)",
+        "DiD coefficient β₃  (log-points; ≈ % change for small values)",
         fontsize=10)
     ax.set_title(
         "Category DiD: Did Twitter Amplify or Suppress Each Content Type?\n"
-        "Positive = amplified beyond organic interest  |  Negative = suppressed\n"
-        "(Matched Reddit subreddit as per-category control)",
+        "Outcome = log(share)  |  Control = log(Reddit posts)  |  HC3 robust SEs\n"
+        "Positive = amplified beyond organic interest  |  Negative = suppressed",
         fontsize=11, fontweight="bold")
 
     fig.tight_layout()
@@ -416,8 +389,16 @@ def plot_category_timeseries(tw_share: pd.DataFrame,
 # ── MAIN ─────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    tw_share                    = build_twitter_panel()
-    cat_controls, generic_baseline = build_reddit_controls()
+    tw_share     = build_twitter_panel()
+    cat_controls = build_reddit_controls()
+
+    # Build generic baseline = aggregate of all matched subreddit controls
+    date_idx = pd.date_range(PRE_START, POST_END, freq="D")
+    if cat_controls:
+        generic_baseline = pd.concat(cat_controls.values(), axis=1).sum(axis=1)
+        generic_baseline = generic_baseline.reindex(date_idx, fill_value=0).astype(float)
+    else:
+        generic_baseline = pd.Series(1.0, index=date_idx)  # flat fallback
 
     res = run_category_did(tw_share, cat_controls, generic_baseline)
     print_results(res)
@@ -426,6 +407,5 @@ if __name__ == "__main__":
     print("\nSaved: out/category_did_results.csv")
 
     plot_results(res)
-    # Pass generic baseline for the timeseries overlay (consistent visual reference)
     plot_category_timeseries(tw_share, generic_baseline, res)
     print("\nDone.")

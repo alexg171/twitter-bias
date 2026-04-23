@@ -6,18 +6,14 @@ Full 4-year window: Oct 27 2020 – Oct 27 2024
 
 Outputs
 -------
-  out/figures/category_composition.png   — stacked % bar pre vs post
-  out/figures/category_shift.png         — net pp shift per category
-  out/figures/category_timeseries.png    — monthly share per category
-  out/figures/bro_shift.png              — male vs female coded over time
-  out/category_counts.csv               — raw counts
+  out/figures/twitter_category_shift.png         — net pp shift per category
+  out/figures/twitter_category_timeseries.png    — monthly share per category
+  out/twitter_category_counts.csv               — raw counts
 """
 
 import os, sys, warnings
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
 import matplotlib.dates as mdates
 
 warnings.filterwarnings("ignore")
@@ -40,17 +36,6 @@ plt.rcParams.update({
 
 # All categories in display order
 ALL_CATS = [c for c, _ in CATEGORY_ORDER] + ["other"]
-
-# Gender-coding for the "bro shift" chart
-MALE_CODED   = {"wrestling", "combat_sports", "sports_nba", "sports_nfl",
-                "sports_mlb", "sports_nhl", "sports_other", "sports_college",
-                "sports_soccer", "tech_gaming", "manosphere"}
-FEMALE_CODED = {"reality_tv", "taylor_swift", "fandom", "sports_womens"}
-# Removed: lgbtq_social (too noisy/event-driven)
-NEUTRAL_CODED = {"entertainment", "religious", "musk_twitter",
-                 "holidays", "true_crime", "news_events",
-                 "politics", "social_filler", "other"}
-
 
 # ── 1. LOAD & CLASSIFY ────────────────────────────────────────────────────────
 
@@ -100,7 +85,7 @@ def print_summary(summ: pd.DataFrame):
 # ── 4. PLOT: SHIFT BARS ──────────────────────────────────────────────────────
 
 def plot_shift(summ: pd.DataFrame):
-    show = summ[~summ["category"].isin(["other"])].sort_values("shift_pp")
+    show = summ[~summ["category"].isin(["other", "religious"])].sort_values("shift_pp")
     colors = [CAT_COLORS.get(c, "#aaaaaa") for c in show["category"]]
 
     fig, ax = plt.subplots(figsize=(10, 8))
@@ -120,7 +105,7 @@ def plot_shift(summ: pd.DataFrame):
                     f"{val:+.2f}pp", va="center",
                     ha="left" if val >= 0 else "right", fontsize=7.5)
     fig.tight_layout()
-    out = f"{FIGURES}/category_shift.png"
+    out = f"{FIGURES}/twitter_category_shift.png"
     fig.savefig(out, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out}")
@@ -141,7 +126,7 @@ def plot_timeseries(df: pd.DataFrame):
 
     # Show interesting non-filler categories
     show = [c for c in ALL_CATS
-            if c not in ("social_filler", "other", "holidays")]
+            if c not in ("social_filler", "other", "holidays", "religious")]
 
     n = len(show)
     fig, axes = plt.subplots(n, 1, figsize=(13, n * 1.5), sharex=True)
@@ -169,7 +154,7 @@ def plot_timeseries(df: pd.DataFrame):
         "Dashed line = Oct 27, 2022 (Musk acquisition)",
         fontsize=12, fontweight="bold", y=1.002)
     fig.tight_layout()
-    out = f"{FIGURES}/category_timeseries.png"
+    out = f"{FIGURES}/twitter_category_timeseries.png"
     fig.savefig(out, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out}")
@@ -181,8 +166,8 @@ if __name__ == "__main__":
     summ = build_summary(df)
     print_summary(summ)
 
-    summ.to_csv("out/category_counts.csv", index=False)
-    print("\nSaved: out/category_counts.csv")
+    summ.to_csv("out/twitter_category_counts.csv", index=False)
+    print("\nSaved: out/twitter_category_counts.csv")
 
     print("\nGenerating plots …")
     plot_shift(summ)
