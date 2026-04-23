@@ -386,6 +386,49 @@ def plot_category_timeseries(tw_share: pd.DataFrame,
     print(f"Saved: {out}")
 
 
+# ── EXPORT STATA PANEL ───────────────────────────────────────────────────────
+
+def export_stata_panel(tw_share: pd.DataFrame,
+                       cat_controls: dict,
+                       generic_baseline: pd.Series):
+    """
+    Export the stacked DiD panel to out/stata_panel.csv for Stata analysis.
+    One row per (date, category, platform).
+    Columns: date, category, twitter, post, log_dev, did, quarter
+    """
+    all_dates = tw_share.index
+    pre_mask  = np.array(all_dates < TREATMENT)
+    post_mask = np.array(all_dates >= TREATMENT)
+
+    def quarter_bin(d):
+        delta = (pd.Timestamp(d) - TREATMENT).days
+        return int(np.floor(delta / 91.25))
+
+    quarters = np.array([quarter_bin(d) for d in all_dates])
+
+    rows = []
+    for cat in TEST_CATS:
+        tw_lnorm  = log_normalize(tw_share[cat], pre_mask)
+        rd_series = cat_controls[cat] if cat in cat_controls else generic_baseline
+        rd_lnorm  = log_normalize(rd_series.reindex(all_dates), pre_mask)
+
+        for i, date in enumerate(all_dates):
+            post_val = int(post_mask[i])
+            q        = int(np.clip(quarters[i], -8, 8))
+            rows.append({"date": date.strftime("%Y-%m-%d"), "category": cat,
+                         "twitter": 1, "post": post_val,
+                         "log_dev": tw_lnorm.iloc[i] if not np.isnan(tw_lnorm.iloc[i]) else np.nan,
+                         "did": post_val, "quarter": q})
+            rows.append({"date": date.strftime("%Y-%m-%d"), "category": cat,
+                         "twitter": 0, "post": post_val,
+                         "log_dev": rd_lnorm.iloc[i] if not np.isnan(rd_lnorm.iloc[i]) else np.nan,
+                         "did": 0, "quarter": q})
+
+    panel = pd.DataFrame(rows)
+    panel.to_csv("out/stata_panel.csv", index=False)
+    print(f"Saved: out/stata_panel.csv  ({len(panel):,} rows)")
+
+
 # ── MAIN ─────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
@@ -405,6 +448,9 @@ if __name__ == "__main__":
 
     res.to_csv("out/category_did_results.csv", index=False)
     print("\nSaved: out/category_did_results.csv")
+
+    # ── Export stacked panel for Stata ───────────────────────────────────────
+    export_stata_panel(tw_share, cat_controls, generic_baseline)
 
     plot_results(res)
     plot_category_timeseries(tw_share, generic_baseline, res)
