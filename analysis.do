@@ -95,7 +95,7 @@ di _newline(2) "=== PER-CATEGORY DiD ==="
 
 * Store results
 tempfile catresults
-postfile cathandle str40 label double b3 se_b3 pval ci_lo ci_hi using `catresults', replace
+postfile cathandle str40 label double b3 se_b3 pval ci_lo ci_hi r2 double nobs using `catresults', replace
 
 levelsof cat_id, local(cats)
 foreach c of local cats {
@@ -110,19 +110,21 @@ foreach c of local cats {
         local pval  = 2 * ttail(e(df_r), abs(`b3' / `se'))
         local ci_lo = `b3' - 1.96 * `se'
         local ci_hi = `b3' + 1.96 * `se'
-        post cathandle ("`lbl'") (`b3') (`se') (`pval') (`ci_lo') (`ci_hi')
-        di "`lbl':  b3 = " %6.3f `b3' "  p = " %5.3f `pval'
+        local r2    = e(r2)
+        local nobs  = e(N)
+        post cathandle ("`lbl'") (`b3') (`se') (`pval') (`ci_lo') (`ci_hi') (`r2') (`nobs')
+        di "`lbl':  b3 = " %6.3f `b3' "  p = " %5.3f `pval' "  r2 = " %5.3f `r2' "  N = " `nobs'
     }
 }
 postclose cathandle
 
 use `catresults', clear
 gsort -b3
-list label b3 se_b3 pval ci_lo ci_hi, sep(0) noobs
+list label b3 se_b3 pval ci_lo ci_hi r2 nobs, sep(0) noobs
 
 * Save
 export delimited "$Data\stata_did_results.csv", replace
-di "Saved: stata_did_results.csv"
+di "Saved: stata_did_results.csv  (includes r2 and nobs)"
 
 
 * ============================================================================

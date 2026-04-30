@@ -1,0 +1,466 @@
+% ============================================================
+% presentation.tex
+% Algorithmic Amplification and Content Bias on Twitter/X
+% Alex Gamez — Panel Data & Discrete Choice Models, Spring 2026
+% ============================================================
+
+\documentclass[aspectratio=169,t]{beamer}
+
+% ── Fonts ────────────────────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Packages ─────────────────────────────────────────────────────────────────
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{bm}
+
+% ── UTEP Brand Colors ─────────────────────────────────────────────────────────
+\definecolor{utepblue}{HTML}{041E42}
+\definecolor{uteporange}{HTML}{FF8200}
+\definecolor{utepsilver}{HTML}{B1B3B3}
+\definecolor{lightbg}{HTML}{F8F8F8}
+\definecolor{darktext}{HTML}{1A1A1A}
+
+% ── Beamer Theme ─────────────────────────────────────────────────────────────
+\usetheme{default}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{normal text}{fg=darktext,bg=white}
+\setbeamercolor{frametitle}{fg=utepblue,bg=white}
+\setbeamercolor{itemize item}{fg=uteporange}
+\setbeamercolor{itemize subitem}{fg=utepsilver}
+\setbeamercolor{block title}{fg=white,bg=utepblue}
+\setbeamercolor{block body}{fg=darktext,bg=lightbg}
+\setbeamercolor{alerted text}{fg=uteporange}
+
+\setbeamertemplate{itemize items}{\textcolor{uteporange}{\small$\blacksquare$}}
+\setbeamertemplate{itemize subitems}{\textcolor{utepsilver}{--}}
+
+% ── Frame title with orange rule ─────────────────────────────────────────────
+\setbeamertemplate{frametitle}{%
+  \vspace{0.3em}%
+  {\color{utepblue}\textbf{\large\insertframetitle}}\\[-0.15em]%
+  {\color{uteporange}\rule{\textwidth}{1.5pt}}%
+  \vspace{0.15em}%
+}
+
+% ── Footline ─────────────────────────────────────────────────────────────────
+\setbeamertemplate{footline}{%
+  \begin{tikzpicture}[overlay,remember picture]
+    \fill[utepblue] (current page.south west)
+      rectangle ([yshift=1.4em]current page.south east);
+    \node[anchor=west, white, font=\tiny] at
+      ([xshift=1em,yshift=0.55em]current page.south west)
+      {Gamez $\cdot$ Algorithmic Amplification on Twitter/X $\cdot$ Spring 2026};
+    \node[anchor=east, white, font=\tiny] at
+      ([xshift=-1em,yshift=0.55em]current page.south east)
+      {\insertframenumber};
+  \end{tikzpicture}%
+}
+
+% ── Helpers ───────────────────────────────────────────────────────────────────
+\newcommand{\orange}[1]{\textcolor{uteporange}{\textbf{#1}}}
+\newcommand{\blue}[1]{\textcolor{utepblue}{\textbf{#1}}}
+\newcommand{\gray}[1]{\textcolor{utepsilver}{#1}}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ── SLIDE 1: TITLE ───────────────────────────────────────────────────────────
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\begin{tikzpicture}[overlay,remember picture]
+  \fill[white] (current page.south west) rectangle (current page.north east);
+  \fill[uteporange]
+    (current page.north west)
+    rectangle ([xshift=0.55cm]current page.south west);
+  \fill[utepblue]
+    (current page.south west)
+    rectangle ([yshift=1.0cm]current page.south east);
+  \node[anchor=west, white, font=\footnotesize] at
+    ([xshift=1cm,yshift=0.45cm]current page.south west)
+    {Panel Data \& Discrete Choice Models --- Spring 2026 \quad$\cdot$\quad The University of Texas at El Paso};
+\end{tikzpicture}
+
+\vspace{1.8cm}
+\hspace{0.9cm}%
+\begin{minipage}{13cm}
+  {\color{utepblue}\fontsize{20}{26}\selectfont\bfseries
+    Algorithmic Amplification\\and Content Bias on Twitter/X}\\[0.5em]
+  {\color{uteporange}\fontsize{13}{18}\selectfont
+    Evidence from the Musk Acquisition (Oct 27, 2022)}\\[1.2em]
+  {\color{darktext}\fontsize{11}{15}\selectfont
+    \textbf{Alex Gamez}\\
+    The University of Texas at El Paso\\[0.3em]
+    \gray{April 2026}}
+\end{minipage}
+\end{frame}
+}
+
+% ── SLIDE 2: MOTIVATION ──────────────────────────────────────────────────────
+\begin{frame}{Motivation}
+{\color{utepblue}\bfseries Social media algorithms shape what people see — and what they believe.}
+\vspace{0.5em}
+\begin{itemize}\setlength\itemsep{0.55em}
+  \item Exposure to X's algorithmic feed for \orange{7 weeks} shifted users toward
+        \orange{more conservative} political opinions
+        \gray{\scriptsize(Gauthier et al., \textit{Nature}, 2025)}
+
+  \item Facebook's ``I Voted'' message increased U.S. voter turnout by
+        \orange{0.39 pp} ($\approx$340{,}000 additional votes) in the 2010 election
+        \gray{\scriptsize(Bond et al., \textit{Nature}, 2012)}
+
+  \item TikTok's algorithm increased teen exposure to misogynistic videos by
+        \orange{4$\times$} in just \orange{5 days}
+        \gray{\scriptsize(UCL \& University of Kent, 2024)}
+
+  \item Researchers document misogynistic ideologies \orange{``moving off screens
+        and into schools,''} shaping real-world norms among boys
+        \gray{\scriptsize(UCL Report, 2024)}
+\end{itemize}
+\end{frame}
+
+% ── SLIDE 3: RESEARCH QUESTION ───────────────────────────────────────────────
+\begin{frame}{Research Question}
+\vspace{0.4em}
+\begin{block}{}
+  \centering\large\bfseries
+  Did Musk's acquisition of Twitter change which types of content the platform algorithm promotes?
+\end{block}
+
+\vspace{1em}
+\begin{columns}[T]
+  \column{0.32\textwidth}
+    \centering
+    \orange{Treatment}\\[0.3em]
+    \small Musk acquisition\\October 27, 2022
+
+  \column{0.32\textwidth}
+    \centering
+    \orange{Treatment Metrics}\\[0.3em]
+    \small Daily share of unique Twitter trending topics by content category
+
+  \column{0.32\textwidth}
+    \centering
+    \orange{Control Metrics}\\[0.3em]
+    \small Reddit activity (post volume) in matched subreddits
+\end{columns}
+\end{frame}
+
+% ── SLIDE 4a: DATA & SOURCES ─────────────────────────────────────────────────
+\begin{frame}{Data \& Sources}
+\begin{columns}[T]
+  \column{0.48\textwidth}
+    \blue{Twitter Trending (Treated)}
+    \begin{itemize}\setlength\itemsep{0.35em}\small
+      \item 4-year panel: Oct 2020 – Oct 2024
+      \item \orange{694,930} unique topic-day observations across \orange{1,462} days
+      \item \orange{46,772} unique trending topics identified
+      \item Scraped from trending archives at 30-min intervals (48 snapshots/day)
+      \item Predictors: daily topic share per category; raw topic counts per category
+    \end{itemize}
+
+  \column{0.48\textwidth}
+    \blue{Reddit (Control)}
+    \begin{itemize}\setlength\itemsep{0.35em}\small
+      \item Arctic Shift time-series API — full public post archive
+      \item Predictors: posts per day, upvotes per day per subreddit
+      \item 25+ matched subreddits covering all 14 DiD categories
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ── SLIDE 4b: CONTENT CLASSIFICATION ─────────────────────────────────────────
+\begin{frame}{Content Classification}
+\begin{columns}[T]
+  \column{0.48\textwidth}
+    \blue{Data Pipeline}
+    \begin{itemize}\setlength\itemsep{0.35em}\small
+      \item CamelCase tokenizer:\\
+            \texttt{\#WWERaw} $\to$ \{wwe, raw\} $\to$ \textit{Wrestling}
+      \item Keyword dictionaries (AI-assisted + manual review)
+      \item 108 manual label overrides applied
+      \item \orange{6,026} unique topics classified (13\% of unique topics)
+      \item Classified topics account for \orange{42.5\%} of all trending appearances
+            
+    \end{itemize}
+
+  \column{0.48\textwidth}
+    \blue{Matched Subreddit Controls}
+    \begin{itemize}\setlength\itemsep{0.35em}\small
+      \item r/SquaredCircle $\leftrightarrow$ Wrestling
+      \item r/nba $\leftrightarrow$ NBA
+      \item r/TaylorSwift $\leftrightarrow$ Taylor Swift
+      \item r/MMA $\leftrightarrow$ Combat Sports
+      \item r/CFB, r/CollegeBasketball $\leftrightarrow$ College Sports
+      \item r/soccer $\leftrightarrow$ Soccer
+      \item \ldots one or more matches per category
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ── SLIDE 4c: 14 CATEGORIES ───────────────────────────────────────────────────
+\begin{frame}{14 Categories in DiD Model}
+\vspace{0.5em}
+\begin{columns}[T]
+  \column{0.48\textwidth}
+    \begin{itemize}\setlength\itemsep{0.45em}\small
+      \item Wrestling
+      \item Combat Sports
+      \item NBA
+      \item NFL
+      \item MLB
+      \item NHL
+      \item Soccer
+    \end{itemize}
+
+  \column{0.48\textwidth}
+    \begin{itemize}\setlength\itemsep{0.45em}\small
+      \item College Sports
+      \item Women's Sports
+      \item Reality TV
+      \item Entertainment
+      \item Taylor Swift
+      \item Fandom
+      \item News \& Politics
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ── SLIDE 5: IDENTIFICATION STRATEGY ─────────────────────────────────────────
+\begin{frame}{Identification Strategy}
+\blue{Difference-in-Differences (DiD)}
+\vspace{0.4em}
+
+\[
+  \text{log\_dev}_{it} =
+  \beta_0 + \beta_1\,\text{Twitter}_{i} +
+  \beta_2\,\text{Post}_{t} +
+  \textcolor{uteporange}{\boldsymbol{\beta_3}}\,(\text{Twitter}_{i} \times \text{Post}_{t}) +
+  \varepsilon_{it}
+\]
+
+\vspace{0.5em}
+\begin{columns}[T]
+  \column{0.50\textwidth}
+    \blue{Variable definitions}
+    \begin{itemize}\setlength\itemsep{0.3em}\small
+      \item $\text{Twitter}_i = 1$ for Twitter observations, 0 for Reddit
+      \item $\text{Post}_t = 1$ for dates after October 27, 2022
+      \item $\textcolor{uteporange}{\boldsymbol{\beta_3}}$ = causal effect: how much Twitter's category share changed relative to Reddit's organic baseline
+      \item $\beta_3 > 0$: algorithmically \orange{amplified} \quad $\beta_3 < 0$: suppressed
+    \end{itemize}
+
+  \column{0.46\textwidth}
+    \blue{Key assumptions}
+    \begin{itemize}\setlength\itemsep{0.3em}\small
+      \item \textbf{Parallel trends}: Reddit and Twitter would have moved together absent the acquisition
+      \item \textbf{No anticipation}: no pre-trend break before Oct 27, 2022
+      \item \textbf{Stable control}: Reddit unaffected by Musk acquisition
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ── SLIDE 6: EVENT STUDY — AMPLIFIED ─────────────────────────────────────────
+\begin{frame}{Event Study — Amplified Categories}
+\begin{center}
+  \includegraphics[width=0.32\linewidth]{stata/event_study_cat/news_politics.png}\hfill
+  \includegraphics[width=0.32\linewidth]{stata/event_study_cat/wrestling.png}\hfill
+  \includegraphics[width=0.32\linewidth]{stata/event_study_cat/combat_sports.png}
+  \includegraphics[width=0.32\linewidth]{stata/event_study_cat/sports_nba.png}
+  \includegraphics[width=0.32\linewidth]{stata/event_study_cat/sports_nfl.png}
+  \includegraphics[width=0.32\linewidth]{stata/event_study_cat/sports_soccer.png}
+\end{center}
+\end{frame}
+
+% ── SLIDE 7: EVENT STUDY — SUPPRESSED ────────────────────────────────────────
+\begin{frame}{Event Study — Suppressed Categories}
+\begin{center}
+  \includegraphics[width=0.48\linewidth]{stata/event_study_cat/taylor_swift.png}\hfill
+  \includegraphics[width=0.48\linewidth]{stata/event_study_cat/sports_womens.png}
+\end{center}
+\end{frame}
+
+% ── SLIDE 8: PARALLEL TRENDS — AMPLIFIED ─────────────────────────────────────
+\begin{frame}{Parallel Trends — Amplified Categories}
+\begin{center}
+  \includegraphics[width=0.32\linewidth]{stata/parallel_trends/news_politics.png}\hfill
+  \includegraphics[width=0.32\linewidth]{stata/parallel_trends/wrestling.png}\hfill
+  \includegraphics[width=0.32\linewidth]{stata/parallel_trends/combat_sports.png}
+  \includegraphics[width=0.32\linewidth]{stata/parallel_trends/sports_nfl.png}
+  \includegraphics[width=0.32\linewidth]{stata/parallel_trends/sports_nba.png}
+  \includegraphics[width=0.32\linewidth]{stata/parallel_trends/sports_soccer.png}
+\end{center}
+\end{frame}
+
+% ── SLIDE 9: PARALLEL TRENDS — SUPPRESSED ────────────────────────────────────
+\begin{frame}{Parallel Trends — Suppressed Categories}
+\begin{center}
+  \includegraphics[width=0.48\linewidth]{stata/parallel_trends/taylor_swift.png}\hfill
+  \includegraphics[width=0.48\linewidth]{stata/parallel_trends/sports_womens.png}
+\end{center}
+\end{frame}
+
+% ── SLIDE 10: MAIN RESULTS ───────────────────────────────────────────────────
+\begin{frame}{Main Results}
+\begin{columns}[T]
+  \column{0.56\textwidth}
+    \begin{center}
+      \includegraphics[width=\linewidth]{category_did.png}
+    \end{center}
+
+  \column{0.42\textwidth}
+    \vspace{0.2em}
+    \footnotesize $\hat{\beta}_3$ estimates, 95\% CI, HC3 robust SEs
+
+    \vspace{0.4em}
+    \orange{Amplified} ($\beta_3 > 0$, $p < 0.05$):
+    \begin{itemize}\setlength\itemsep{0.08em}\footnotesize
+      \item News \& Politics \hfill $+$0.697
+      \item Wrestling \hfill $+$0.641
+      \item Combat Sports \hfill $+$0.540
+      \item NBA \hfill $+$0.358
+      \item NFL \hfill $+$0.294
+      \item Soccer \hfill $+$0.291
+    \end{itemize}
+
+    \vspace{0.2em}
+    \blue{Suppressed} ($\beta_3 < 0$, $p < 0.05$):
+    \begin{itemize}\setlength\itemsep{0.08em}\footnotesize
+      \item Taylor Swift \hfill $-$0.836
+      \item Women's Sports \hfill $-$0.544
+    \end{itemize}
+
+    
+\end{columns}
+\end{frame}
+
+% ── SLIDE 10b: PER-CATEGORY RESULTS TABLE ────────────────────────────────────
+\begin{frame}{Per-Category DiD Results}
+\vspace{0.2em}
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{0.9}
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Category} & \textbf{$\hat{\beta}_3$} & \textbf{SE} & \textbf{p-value} & \textbf{95\% CI} & \textbf{Obs.} & \textbf{R$^2$} \\
+\midrule
+\textcolor{uteporange}{News \& Politics}   & $+$0.753 & 0.048 & $<$0.001 & [0.658,\ 0.847] & 2,917 & 0.173 \\
+\textcolor{uteporange}{Wrestling}          & $+$0.790 & 0.040 & $<$0.001 & [0.712,\ 0.868] & 2,917 & 0.216 \\
+\textcolor{uteporange}{Combat Sports}      & $+$0.546 & 0.036 & $<$0.001 & [0.476,\ 0.617] & 2,917 & 0.174 \\
+\textcolor{uteporange}{NBA}                & $+$0.359 & 0.057 & $<$0.001 & [0.248,\ 0.470] & 2,917 & 0.037 \\
+\textcolor{uteporange}{Soccer}             & $+$0.320 & 0.045 & $<$0.001 & [0.232,\ 0.408] & 2,917 & 0.035 \\
+\textcolor{uteporange}{NFL}                & $+$0.286 & 0.066 & $<$0.001 & [0.157,\ 0.415] & 2,917 & 0.017 \\
+\textcolor{uteporange}{Entertainment}      & $+$0.243 & 0.041 & $<$0.001 & [0.163,\ 0.324] & 2,917 & 0.057 \\
+\textcolor{uteporange}{Reality TV}         & $+$0.220 & 0.037 & $<$0.001 & [0.147,\ 0.292] & 2,917 & 0.042 \\
+\textcolor{uteporange}{MLB}                & $+$0.160 & 0.043 & $<$0.001 & [0.075,\ 0.245] & 2,917 & 0.012 \\
+\textcolor{uteporange}{NHL}                & $+$0.125 & 0.033 & $<$0.001 & [0.059,\ 0.190] & 2,917 & 0.010 \\
+\textcolor{utepsilver}{College Sports}     & $+$0.061 & 0.055 & 0.262    & [$-$0.046,\ 0.169] & 2,917 & 0.007 \\
+\textcolor{utepsilver}{Fandom}             & $+$0.014 & 0.036 & 0.702    & [$-$0.057,\ 0.085] & 2,917 & 0.061 \\
+\textcolor{utepblue}{Women's Sports}       & $-$0.542 & 0.040 & $<$0.001 & [$-$0.620,\ $-$0.463] & 2,917 & 0.179 \\
+\textcolor{utepblue}{Taylor Swift}         & $-$0.836 & 0.037 & $<$0.001 & [$-$0.907,\ $-$0.764] & 2,917 & 0.396 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3em}
+{\scriptsize\textcolor{utepsilver}{HC3 robust SEs. Each regression: 2 units (Twitter + Reddit control) $\times$ 1,462 days. \textcolor{uteporange}{Orange} = amplified, \textcolor{utepblue}{blue} = suppressed, gray = no effect.}}
+\end{center}
+\end{frame}
+
+% ── SLIDE 11: INTERPRETING THE RESULTS ───────────────────────────────────────
+\begin{frame}{Interpreting the Results}
+\begin{columns}[T]
+  \column{0.48\textwidth}
+    \orange{Algorithmically Amplified}
+    \vspace{0.3em}
+    \begin{itemize}\setlength\itemsep{0.4em}\small
+      \item \textbf{News \& Politics} (+101\%) — consistent with Musk's stated goal of making X a ``digital town square'' for political speech
+      \item \textbf{Wrestling \& Combat Sports} (+90\%, +72\%) — content heavily indexed toward young male audiences
+      \item \textbf{Mainstream Sports (NBA, NFL)} (+43\%, +34\%) — broad, high-engagement content prioritized across the platform
+    \end{itemize}
+
+  \column{0.48\textwidth}
+    \blue{Algorithmically Suppressed}
+    \vspace{0.3em}
+    \begin{itemize}\setlength\itemsep{0.4em}\small
+      \item \textbf{Taylor Swift} ($-$57\%) — largest negative effect; fanbase skews female and Democrat (55\% identify as Democrat, Harris Poll 2024)
+      \item \textbf{Women's Sports} ($-$42\%) — suppressed despite growing organic Reddit interest over the same period
+    \end{itemize}
+
+\end{columns}
+\end{frame}
+
+% ── SLIDE 12: LIMITATIONS ────────────────────────────────────────────────────
+\begin{frame}{Limitations}
+\begin{itemize}\setlength\itemsep{0.6em}
+  \item \textbf{Reddit $\neq$ perfect counterfactual}\\
+        \small Platform demographics differ from Twitter's — Reddit skews younger and more male, which may partially confound the gender interpretation.
+
+  \item \textbf{Incomplete topic coverage}\\
+        \small 87\% of \textit{unique} topics unclassified — but these are mostly one-off events averaging fewer than 10 appearances each. Classified topics account for \orange{42.5\%} of all trending appearances.
+
+  \item \textbf{Cannot isolate mechanisms}\\
+        \small Cannot separately identify whether changes reflect shifts in the recommendation algorithm, a changed user base following mass Twitter exits, or natural shifts in user preference.
+\end{itemize}
+\end{frame}
+
+% ── SLIDE 13: REFERENCES ─────────────────────────────────────────────────────
+\begin{frame}{References}
+\begin{columns}[T]
+  \column{0.48\textwidth}
+    \begin{itemize}\setlength\itemsep{0.3em}\scriptsize
+      \item Gauthier et al. The political effects of X's feed algorithm. \textit{Nature} (2025)
+      \item Bond et al. A 61-million-person experiment in social influence. \textit{Nature} (2012)
+      \item UCL \& University of Kent. Social media algorithms amplify misogynistic content to teens (2024)
+      \item Ye, Luceri \& Ferrara. Auditing Political Exposure Bias on Twitter/X during 2024 U.S. Election. \textit{ACM FAccT} (2025)
+      \item Hickey et al. Auditing Elon Musk's Impact on Hate Speech and Bots. \textit{ICWSM} (2023)
+      \item Hickey et al. X under Musk's leadership: Substantial hate and no reduction in inauthentic activity. \textit{PLOS ONE} (2025)
+    \end{itemize}
+
+  \column{0.48\textwidth}
+    \begin{itemize}\setlength\itemsep{0.3em}\scriptsize
+      \item Barrie. Did the Musk takeover boost contentious actors on Twitter? \textit{Harvard Kennedy School Misinformation Review} (2023)
+      \item {\"O}zturan et al. Declining information quality under new platform governance. \textit{Harvard Kennedy School Misinformation Review} (2025)
+      \item Bail et al. Exposure to opposing views on social media can increase political polarization. \textit{PNAS} (2018)
+      \item Kramer, Guillory \& Hancock. Experimental evidence of massive-scale emotional contagion through social networks. \textit{PNAS} (2014)
+      \item Arctic Shift time-series API — Reddit public post archive
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ── SLIDE 14: THANK YOU ───────────────────────────────────────────────────────
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+
+\begin{tikzpicture}[overlay,remember picture]
+  \fill[white] (current page.south west) rectangle (current page.north east);
+  \fill[uteporange]
+    (current page.north west)
+    rectangle ([xshift=0.55cm]current page.south west);
+  \fill[utepblue]
+    (current page.south west)
+    rectangle ([yshift=1.0cm]current page.south east);
+  
+\end{tikzpicture}
+
+\vspace{2.2cm}
+\hspace{0.9cm}%
+\begin{minipage}{13cm}
+  {\color{utepblue}\fontsize{36}{44}\selectfont\bfseries Thank You}\\[0.5em]
+  {\color{darktext}\fontsize{14}{18}\selectfont Questions?}
+\end{minipage}
+\end{frame}
+}
+
+\end{document}
