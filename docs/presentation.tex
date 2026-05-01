@@ -107,10 +107,10 @@
 }
 
 % ── SLIDE 2: MOTIVATION ──────────────────────────────────────────────────────
-\begin{frame}{Motivation}
+\begin{frame}{Fun Facts}
 {\color{utepblue}\bfseries Social media algorithms shape what people see — and what they believe.}
-\vspace{0.5em}
-\begin{itemize}\setlength\itemsep{0.55em}
+\vspace{0.4em}
+\begin{itemize}\setlength\itemsep{0.40em}
   \item Exposure to X's algorithmic feed for \orange{7 weeks} shifted users toward
         \orange{more conservative} political opinions
         \gray{\scriptsize(Gauthier et al., \textit{Nature}, 2025)}
@@ -119,13 +119,15 @@
         \orange{0.39 pp} ($\approx$340{,}000 additional votes) in the 2010 election
         \gray{\scriptsize(Bond et al., \textit{Nature}, 2012)}
 
-  \item TikTok's algorithm increased teen exposure to misogynistic videos by
-        \orange{4$\times$} in just \orange{5 days}
-        \gray{\scriptsize(UCL \& University of Kent, 2024)}
+  \item The share of women journalists linking online attacks to \orange{offline physical harm}
+        more than \orange{doubled} — from 20\% to 42\% — between 2020 and 2025
+        \gray{\scriptsize(UN Women, 2025)}
 
-  \item Researchers document misogynistic ideologies \orange{``moving off screens
-        and into schools,''} shaping real-world norms among boys
-        \gray{\scriptsize(UCL Report, 2024)}
+  \item Congress mandated ByteDance divest TikTok or face a U.S. ban — citing risks
+        of a foreign-controlled algorithm reaching \orange{170 million} Americans.
+        U.S. investors acquired the platform for \orange{\$14B}; the algorithm is now
+        being retrained on U.S. data by \orange{Oracle, Silver Lake, and MGX}
+        \gray{\scriptsize(Protecting Americans from Foreign Adversary Controlled Applications Act, 2024; \textit{NPR}, Jan 2026)}
 \end{itemize}
 \end{frame}
 
@@ -165,8 +167,8 @@
       \item 4-year panel: Oct 2020 – Oct 2024
       \item \orange{694,930} unique topic-day observations across \orange{1,462} days
       \item \orange{46,772} unique trending topics identified
-      \item Scraped from trending archives at 30-min intervals (48 snapshots/day)
-      \item Predictors: daily topic share per category; raw topic counts per category
+      \item Scraped from \orange{archive.twitter-trending.com}
+      \item Predictors: daily topic share per category
     \end{itemize}
 
   \column{0.48\textwidth}
@@ -188,7 +190,6 @@
       \item CamelCase tokenizer:\\
             \texttt{\#WWERaw} $\to$ \{wwe, raw\} $\to$ \textit{Wrestling}
       \item Keyword dictionaries (AI-assisted + manual review)
-      \item 108 manual label overrides applied
       \item \orange{6,026} unique topics classified (13\% of unique topics)
       \item Classified topics account for \orange{42.5\%} of all trending appearances
             
@@ -234,6 +235,8 @@
       \item News \& Politics
     \end{itemize}
 \end{columns}
+\vspace{2em}
+{\scriptsize\textcolor{utepsilver}{Categories selected based on highest-frequency trending topics over the 4-year window.}}
 \end{frame}
 
 % ── SLIDE 5: IDENTIFICATION STRATEGY ─────────────────────────────────────────
@@ -351,24 +354,24 @@
 \scriptsize
 \setlength{\tabcolsep}{5pt}
 \renewcommand{\arraystretch}{0.9}
-\begin{tabular}{lrrrrrrr}
+\begin{tabular}{lrrrrr}
 \toprule
-\textbf{Category} & \textbf{$\hat{\beta}_3$} & \textbf{SE} & \textbf{p-value} & \textbf{95\% CI} & \textbf{Obs.} & \textbf{R$^2$} \\
+\textbf{Category} & \textbf{$\hat{\beta}_3$} & \textbf{SE} & \textbf{p-value} & \textbf{95\% CI} & \textbf{R$^2$} \\
 \midrule
-\textcolor{uteporange}{News \& Politics}   & $+$0.697 & 0.041 & $<$0.001 & [0.616,\ 0.777] & 2,917 & 0.211 \\
-\textcolor{uteporange}{Wrestling}          & $+$0.641 & 0.036 & $<$0.001 & [0.570,\ 0.711] & 2,917 & 0.191 \\
-\textcolor{uteporange}{Combat Sports}      & $+$0.540 & 0.036 & $<$0.001 & [0.470,\ 0.611] & 2,917 & 0.217 \\
-\textcolor{uteporange}{NBA}                & $+$0.358 & 0.057 & $<$0.001 & [0.247,\ 0.469] & 2,917 & 0.040 \\
-\textcolor{uteporange}{NFL}                & $+$0.294 & 0.066 & $<$0.001 & [0.164,\ 0.423] & 2,917 & 0.020 \\
-\textcolor{uteporange}{Soccer}             & $+$0.291 & 0.045 & $<$0.001 & [0.203,\ 0.379] & 2,917 & 0.031 \\
-\textcolor{uteporange}{Entertainment}      & $+$0.170 & 0.041 & $<$0.001 & [0.090,\ 0.250] & 2,917 & 0.083 \\
-\textcolor{uteporange}{Reality TV}         & $+$0.194 & 0.037 & $<$0.001 & [0.121,\ 0.267] & 2,917 & 0.049 \\
-\textcolor{uteporange}{MLB}                & $+$0.164 & 0.043 & $<$0.001 & [0.079,\ 0.249] & 2,917 & 0.012 \\
-\textcolor{uteporange}{NHL}                & $+$0.132 & 0.033 & $<$0.001 & [0.066,\ 0.197] & 2,917 & 0.010 \\
-\textcolor{utepsilver}{College Sports}     & $+$0.044 & 0.052 & 0.398    & [$-$0.059,\ 0.148] & 2,917 & 0.007 \\
-\textcolor{utepsilver}{Fandom}             & $-$0.008 & 0.034 & 0.814    & [$-$0.074,\ 0.059] & 2,917 & 0.069 \\
-\textcolor{utepblue}{Women's Sports}       & $-$0.544 & 0.039 & $<$0.001 & [$-$0.621,\ $-$0.468] & 2,917 & 0.187 \\
-\textcolor{utepblue}{Taylor Swift}         & $-$0.836 & 0.036 & $<$0.001 & [$-$0.906,\ $-$0.766] & 2,917 & 0.409 \\
+\textcolor{uteporange}{News \& Politics}   & $+$0.697 & 0.041 & $<$0.001 & [0.616,\ 0.777] & 0.211 \\
+\textcolor{uteporange}{Wrestling}          & $+$0.641 & 0.036 & $<$0.001 & [0.570,\ 0.711] & 0.191 \\
+\textcolor{uteporange}{Combat Sports}      & $+$0.540 & 0.036 & $<$0.001 & [0.470,\ 0.611] & 0.217 \\
+\textcolor{uteporange}{NBA}                & $+$0.358 & 0.057 & $<$0.001 & [0.247,\ 0.469] & 0.040 \\
+\textcolor{uteporange}{NFL}                & $+$0.294 & 0.066 & $<$0.001 & [0.164,\ 0.423] & 0.020 \\
+\textcolor{uteporange}{Soccer}             & $+$0.291 & 0.045 & $<$0.001 & [0.203,\ 0.379] & 0.031 \\
+\textcolor{uteporange}{Entertainment}      & $+$0.170 & 0.041 & $<$0.001 & [0.090,\ 0.250] & 0.083 \\
+\textcolor{uteporange}{Reality TV}         & $+$0.194 & 0.037 & $<$0.001 & [0.121,\ 0.267] & 0.049 \\
+\textcolor{uteporange}{MLB}                & $+$0.164 & 0.043 & $<$0.001 & [0.079,\ 0.249] & 0.012 \\
+\textcolor{uteporange}{NHL}                & $+$0.132 & 0.033 & $<$0.001 & [0.066,\ 0.197] & 0.010 \\
+\textcolor{utepsilver}{College Sports}     & $+$0.044 & 0.052 & 0.398    & [$-$0.059,\ 0.148] & 0.007 \\
+\textcolor{utepsilver}{Fandom}             & $-$0.008 & 0.034 & 0.814    & [$-$0.074,\ 0.059] & 0.069 \\
+\textcolor{utepblue}{Women's Sports}       & $-$0.544 & 0.039 & $<$0.001 & [$-$0.621,\ $-$0.468] & 0.187 \\
+\textcolor{utepblue}{Taylor Swift}         & $-$0.836 & 0.036 & $<$0.001 & [$-$0.906,\ $-$0.766] & 0.409 \\
 \bottomrule
 \end{tabular}
 
@@ -386,15 +389,15 @@
     \begin{itemize}\setlength\itemsep{0.4em}\small
       \item \textbf{News \& Politics} (+101\%) — consistent with Musk's stated goal of making X a ``digital town square'' for political speech
       \item \textbf{Wrestling \& Combat Sports} (+90\%, +72\%) — content heavily indexed toward young male audiences
-      \item \textbf{Mainstream Sports (NBA, NFL)} (+43\%, +34\%) — broad, high-engagement content prioritized across the platform
+      \item \textbf{Mainstream Sports (NBA, NFL)} (+43\%, +34\%) — broad, high-engagement content prioritized across the platform, leans male
     \end{itemize}
 
   \column{0.48\textwidth}
     \blue{Algorithmically Suppressed}
     \vspace{0.3em}
     \begin{itemize}\setlength\itemsep{0.4em}\small
-      \item \textbf{Taylor Swift} ($-$57\%) — largest negative effect; fanbase skews female and Democrat (55\% identify as Democrat, Harris Poll 2024)
-      \item \textbf{Women's Sports} ($-$42\%) — suppressed despite growing organic Reddit interest over the same period
+      \item \textbf{Taylor Swift} ($-$57\%) — largest negative effect; fanbase skews female and Progressive (Harris Poll 2024)
+      \item \textbf{Women's Sports} ($-$42\%) — suppressed despite growing Reddit interest over the same period
     \end{itemize}
 
 \end{columns}
@@ -404,13 +407,14 @@
 \begin{frame}{Limitations}
 \begin{itemize}\setlength\itemsep{0.6em}
   \item \textbf{Reddit $\neq$ perfect counterfactual}\\
-        \small Platform demographics differ from Twitter's — Reddit skews younger and more male, which may partially confound the gender interpretation.
+        \small Platform demographics differ from Twitter's. 
 
   \item \textbf{Incomplete topic coverage}\\
         \small 87\% of \textit{unique} topics unclassified — but these are mostly one-off events averaging fewer than 10 appearances each. Classified topics account for \orange{42.5\%} of all trending appearances.
 
-  \item \textbf{Cannot isolate mechanisms}\\
+  \item \textbf{Cannot isolate effects}\\
         \small Cannot separately identify whether changes reflect shifts in the recommendation algorithm, a changed user base following mass Twitter exits, or natural shifts in user preference.
+
 \end{itemize}
 \end{frame}
 
@@ -432,7 +436,9 @@
       \item Barrie. Did the Musk takeover boost contentious actors on Twitter? \textit{Harvard Kennedy School Misinformation Review} (2023)
       \item {\"O}zturan et al. Declining information quality under new platform governance. \textit{Harvard Kennedy School Misinformation Review} (2025)
       \item Bail et al. Exposure to opposing views on social media can increase political polarization. \textit{PNAS} (2018)
-      \item Kramer, Guillory \& Hancock. Experimental evidence of massive-scale emotional contagion through social networks. \textit{PNAS} (2014)
+      \item UN Women. Online violence against women journalists. \textit{UN Women} (2025)
+      \item TikTok finalizes deal to form new American entity. \textit{NPR} (Jan 22, 2026)
+      \item Who owns TikTok now and how could it change for US users? \textit{BBC} (Jan 23, 2026)\\
       \item Arctic Shift time-series API — Reddit public post archive
     \end{itemize}
 \end{columns}
