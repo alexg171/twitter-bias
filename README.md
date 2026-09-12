@@ -10,26 +10,37 @@ Did Elon Musk's acquisition of Twitter (October 27, 2022) causally shift which c
 
 ---
 
+## Repo Layout
+
+```
+src/    analysis and scraping scripts
+data/   raw input files (not committed — see data/README.md)
+out/    generated csv/figure outputs (not committed)
+docs/   presentation & write-up
+```
+
 ## Data
+
+Raw inputs live in `data/` (see [data/README.md](data/README.md)); generated outputs land in `out/`.
 
 | File | Description |
 |------|-------------|
-| `out/twitter_trending_4yr.csv` | 694,930 unique topic-day observations, Oct 2020–Oct 2024 |
-| `out/reddit_category.tsv` | Daily post counts for 16 matched subreddits, Oct 2020–Oct 2024 |
+| `data/twitter_trending_4yr.csv` | 694,930 unique topic-day observations, Oct 2020–Oct 2024 |
+| `data/reddit_category.tsv` | Daily post counts for 16 matched subreddits, Oct 2020–Oct 2024 |
 | `out/unique_topics.csv` | Deduplicated topic list with auto-assigned categories |
 | `out/top500_topics_4yr.csv` | Top 500 topics for manual review |
-| `out/stata_panel.csv` | Long-format DiD panel fed into Stata (`analysis.do`) |
-| `out/stata_did_results.csv` | β₃ coefficients exported by Stata for each category |
+| `out/stata_panel.csv` | Long-format DiD panel (legacy — was fed into Stata's `analysis.do`, since removed) |
+| `out/category_did_results.csv` | β₃ coefficients per category |
 
-**Do not commit raw data files** — they are listed in `.gitignore`.
+**Do not commit raw data or output files** — they are listed in `.gitignore`.
 
 ---
 
 ## Pipeline
 
-Run everything with one command:
+Run everything with one command from `src/`:
 ```
-run_all.bat
+src\run_all.bat
 ```
 
 | Step | Script | Output |
@@ -37,9 +48,10 @@ run_all.bat
 | 1 | `twitter_unique.py` | `out/unique_topics.csv`, `out/twitter_category_counts.csv` |
 | 2 | `category_analysis.py` | `out/figures/twitter_category_shift.png`, `out/figures/twitter_category_timeseries.png` |
 | 3 | `category_did.py` | `out/stata_panel.csv`, `out/category_did_results.csv` |
-| 4 | `analysis.do` *(Stata)* | `out/stata_did_results.csv`, `out/figures/event_study_cat/*.png`, `out/figures/parallel_trends/*.png` |
-| 5 | `category_plots.py` | `out/figures/parallel_trends/*.png`, `out/figures/event_study/*.png` |
-| 6 | `category_demographics.py` | `out/figures/demographics/*.png` |
+| 4 | `category_plots.py` | `out/figures/parallel_trends/*.png`, `out/figures/event_study/*.png` |
+| 5 | `category_demographics.py` | `out/figures/demographics/*.png` |
+
+> **Note:** the DiD estimation previously ran through a Stata script (`analysis.do`, ~468 lines) which has been removed from the project. `category_did.py` still exports `out/stata_panel.csv` in the same shape, but nothing currently consumes it — the regression itself needs to be reimplemented in Python (e.g. `statsmodels`) if you want to regenerate the β₃ results below from scratch.
 
 ---
 
@@ -62,13 +74,14 @@ log_dev(y_it) = β0 + β1·Twitter_i + β2·Post_t + β3·(Twitter_i × Post_t) 
 
 ## File Reference
 
+All scripts live in `src/`.
+
 | File | Purpose |
 |------|---------|
 | `category_lexicon.py` | 14-category keyword classifier (CamelCase-aware) |
 | `twitter_unique.py` | Deduplicates raw trending data, assigns categories |
 | `category_analysis.py` | Category composition bar charts and time series |
 | `category_did.py` | Builds DiD panel, exports `stata_panel.csv` |
-| `analysis.do` | Stata DiD estimation, event studies, parallel trends |
 | `category_plots.py` | Per-category parallel trends and quarterly event study |
 | `category_demographics.py` | Audience demographic visualizations |
 | `category_subreddit_mapping.py` | Shared subreddit ↔ category mapping |
@@ -111,5 +124,3 @@ log_dev(y_it) = β0 + β1·Twitter_i + β2·Post_t + β3·(Twitter_i × Post_t) 
 ```
 pip install pandas numpy matplotlib statsmodels requests
 ```
-
-Stata `reghdfe` and `regsave` packages required for `analysis.do`.

@@ -48,14 +48,14 @@ echo ============================================================
 echo   ALL DONE
 echo.
 echo   Key outputs:
-echo     out\unique_topics.csv
-echo     out\category_did_results.csv
-echo     out\category_counts.csv
-echo     out\figures\category_shift.png
-echo     out\figures\category_did.png
-echo     out\figures\parallel_trends\  (17 plots)
-echo     out\figures\event_study\      (17 plots)
-echo     out\figures\demographics\     (summary + scatter)
+echo     ..\out\unique_topics.csv
+echo     ..\out\category_did_results.csv
+echo     ..\out\category_counts.csv
+echo     ..\out\figures\category_shift.png
+echo     ..\out\figures\category_did.png
+echo     ..\out\figures\parallel_trends\  (17 plots)
+echo     ..\out\figures\event_study\      (17 plots)
+echo     ..\out\figures\demographics\     (summary + scatter)
 echo ============================================================
 echo.
 pause

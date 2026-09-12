@@ -22,8 +22,8 @@ TREATMENT = pd.Timestamp("2022-10-27")
 PRE_START = pd.Timestamp("2020-10-27")
 POST_END = pd.Timestamp("2024-10-27")
 
-os.makedirs("out/figures/parallel_trends", exist_ok=True)
-os.makedirs("out/figures/event_study", exist_ok=True)
+os.makedirs("../out/figures/parallel_trends", exist_ok=True)
+os.makedirs("../out/figures/event_study", exist_ok=True)
 
 plt.rcParams.update({
     "figure.dpi": 150,
@@ -43,7 +43,7 @@ PLOT_CATS = [
 def build_twitter_panel() -> pd.DataFrame:
     """Load Twitter trending data and compute daily category shares."""
     print("Loading Twitter trends …")
-    df = pd.read_csv("out/twitter_trending_4yr.csv", parse_dates=["Date"])
+    df = pd.read_csv("../data/twitter_trending_4yr.csv", parse_dates=["Date"])
     df = df.drop_duplicates(subset=["Date", "Topic"])
     df["category"] = df["Topic"].apply(classify_category)
 
@@ -65,7 +65,7 @@ def build_twitter_panel() -> pd.DataFrame:
 def build_reddit_controls() -> tuple:
     """Load Reddit data and build matched category controls."""
     print("Loading Reddit controls …")
-    rc = pd.read_csv("out/reddit_category.tsv", sep="\t", parse_dates=["date"])
+    rc = pd.read_csv("../data/reddit_category.tsv", sep="\t", parse_dates=["date"])
     rc = rc[(rc["date"] >= PRE_START) & (rc["date"] <= POST_END)]
 
     full_idx = pd.date_range(PRE_START, POST_END, freq="D")
@@ -131,7 +131,7 @@ def plot_parallel_trends(tw_share: pd.DataFrame, cat_controls: dict, generic: pd
         plt.setp(ax.xaxis.get_majorticklabels(), rotation=30, ha="right", fontsize=7)
         ax.legend(fontsize=7, loc="upper left")
         fig.tight_layout()
-        fig.savefig(f"out/figures/parallel_trends/{cat}.png", bbox_inches="tight")
+        fig.savefig(f"../out/figures/parallel_trends/{cat}.png", bbox_inches="tight")
         plt.close()
 
     print(f"  Saved {len(PLOT_CATS)} plots.")
@@ -208,7 +208,7 @@ def plot_event_studies(tw_share: pd.DataFrame, cat_controls: dict, generic: pd.S
         ax.set_title(f"Event Study — {label}", fontsize=11, fontweight="bold")
         ax.legend(fontsize=8, loc="upper left")
         fig.tight_layout()
-        fig.savefig(f"out/figures/event_study/{cat}.png", bbox_inches="tight")
+        fig.savefig(f"../out/figures/event_study/{cat}.png", bbox_inches="tight")
         plt.close()
 
     print(f"  Saved {len(PLOT_CATS)} plots.")

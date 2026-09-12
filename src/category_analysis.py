@@ -6,9 +6,9 @@ Full 4-year window: Oct 27 2020 – Oct 27 2024
 
 Outputs
 -------
-  out/figures/twitter_category_shift.png         — net pp shift per category
-  out/figures/twitter_category_timeseries.png    — monthly share per category
-  out/twitter_category_counts.csv               — raw counts
+  ../out/figures/twitter_category_shift.png         — net pp shift per category
+  ../out/figures/twitter_category_timeseries.png    — monthly share per category
+  ../out/twitter_category_counts.csv               — raw counts
 """
 
 import os, sys, warnings
@@ -26,8 +26,8 @@ from category_lexicon import (
 )
 
 TREATMENT = pd.Timestamp("2022-10-27")
-DATA_FILE = "out/twitter_trending_4yr.csv"
-FIGURES = "out/figures"
+DATA_FILE = "../data/twitter_trending_4yr.csv"
+FIGURES = "../out/figures"
 os.makedirs(FIGURES, exist_ok=True)
 
 plt.rcParams.update(
@@ -199,8 +199,8 @@ if __name__ == "__main__":
     summ = build_summary(df)
     print_summary(summ)
 
-    summ.to_csv("out/twitter_category_counts.csv", index=False)
-    print("\nSaved: out/twitter_category_counts.csv")
+    summ.to_csv("../../out/twitter_category_counts.csv", index=False)
+    print("\nSaved: ../out/twitter_category_counts.csv")
 
     print("\nGenerating plots …")
     plot_shift(summ)

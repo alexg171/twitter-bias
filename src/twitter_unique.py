@@ -1,7 +1,7 @@
 import pandas as pd
 from category_lexicon import classify_category
 
-UNIQUE_PATH = "out/unique_topics.csv"
+UNIQUE_PATH = "../out/unique_topics.csv"
 
 # ── Shorthand → official category name ───────────────────────────────────────
 LABEL_ALIASES = {
@@ -81,7 +81,7 @@ def normalize_label(raw: str) -> str:
 
 
 # ── Load twitter trending data ────────────────────────────────────────────────
-df = pd.read_csv("out/twitter_trending_4yr.csv")
+df = pd.read_csv("../data/twitter_trending_4yr.csv")
 freq = df["Topic"].value_counts()
 
 # ── Load existing unique_topics to preserve manual labels ────────────────────

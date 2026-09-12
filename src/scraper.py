@@ -31,9 +31,9 @@ def scrape_trending_page(url, date, driver, timestamp):
         
         if main_list and main_list[0]['Topic'] != '-':
             os.makedirs("out", exist_ok=True)
-            pd.DataFrame(main_list).to_csv(f"out/trending_{timestamp}.csv", index=False, mode='a', header=not os.path.exists(f"out/trending_{timestamp}.csv"))
-            pd.DataFrame(most_tweeted).to_csv(f"out/most_{timestamp}.csv", index=False, mode='a', header=not os.path.exists(f"out/most_{timestamp}.csv"))
-            pd.DataFrame(longest_trending).to_csv(f"out/longest_{timestamp}.csv", index=False, mode='a', header=not os.path.exists(f"out/longest_{timestamp}.csv"))
+            pd.DataFrame(main_list).to_csv(f"../out/trending_{timestamp}.csv", index=False, mode='a', header=not os.path.exists(f"../out/trending_{timestamp}.csv"))
+            pd.DataFrame(most_tweeted).to_csv(f"../out/most_{timestamp}.csv", index=False, mode='a', header=not os.path.exists(f"../out/most_{timestamp}.csv"))
+            pd.DataFrame(longest_trending).to_csv(f"../out/longest_{timestamp}.csv", index=False, mode='a', header=not os.path.exists(f"../out/longest_{timestamp}.csv"))
             print(f"Success for {date}")
         else:
             print(f"Data was still dashes for {date}. You might need a longer wait or a scroll.")

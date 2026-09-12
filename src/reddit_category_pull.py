@@ -3,7 +3,7 @@ Pull daily post counts for category-specific subreddits via Arctic Shift time se
 One API call per subreddit (count) + one for score = 2 calls per subreddit total.
 Far faster than the old per-day approach (was 1,462 calls per subreddit).
 
-Output: out/reddit_category.tsv
+Output: ../data/reddit_category.tsv
   date | subreddit | category | n_posts | total_score
 """
 
@@ -15,7 +15,7 @@ from category_subreddit_mapping import SUBREDDIT_CATEGORY
 
 START    = "2020-10-27"
 END      = "2024-10-27"
-OUT_FILE = "out/reddit_category.tsv"
+OUT_FILE = "../data/reddit_category.tsv"
 API_URL  = "https://arctic-shift.photon-reddit.com/api/time_series"
 
 os.makedirs("out", exist_ok=True)

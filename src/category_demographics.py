@@ -9,7 +9,7 @@ import matplotlib.patches as mpatches
 import numpy as np
 import os
 
-os.makedirs("out/figures/demographics", exist_ok=True)
+os.makedirs("../out/figures/demographics", exist_ok=True)
 
 # ── Demographic Data ──────────────────────────────────────────────────────────
 # Each entry: (label, pct_male, age_label, age_median, political_score, political_label, source)
@@ -278,7 +278,7 @@ def plot_summary_grid():
                fontsize=7.5, bbox_to_anchor=(0.5, -0.02), frameon=False)
 
     plt.tight_layout(rect=[0.18, 0.02, 1, 0.99])
-    out = "out/figures/demographics/summary_grid.png"
+    out = "../../out/figures/demographics/summary_grid.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out}")
@@ -349,7 +349,7 @@ def plot_individual_card(cat):
              fontsize=6.5, color="gray", style="italic")
 
     plt.tight_layout(rect=[0, 0.05, 1, 1])
-    out = f"out/figures/demographics/{cat['key']}.png"
+    out = f"../../out/figures/demographics/{cat['key']}.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out}")
@@ -426,7 +426,7 @@ def plot_bro_scatter():
     cb.set_ticks([])
 
     plt.tight_layout()
-    out = "out/figures/demographics/bro_scatter.png"
+    out = "../../out/figures/demographics/bro_scatter.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out}")
@@ -466,7 +466,7 @@ def plot_age_gender_bubble():
     ax.text(15.5, 49, "← More Female", fontsize=7.5, color="gray", va="top")
 
     plt.tight_layout()
-    out = "out/figures/demographics/age_gender_bubble.png"
+    out = "../../out/figures/demographics/age_gender_bubble.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out}")
@@ -480,4 +480,4 @@ if __name__ == "__main__":
         plot_individual_card(cat)
     plot_bro_scatter()
     plot_age_gender_bubble()
-    print("\nAll demographic figures saved to out/figures/demographics/")
+    print("\nAll demographic figures saved to ../out/figures/demographics/")

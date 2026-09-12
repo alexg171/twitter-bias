@@ -24,8 +24,8 @@ Negative β3  → Twitter suppressed this category below what organic interest w
 
 Output
 ------
-  out/category_did_results.csv
-  out/figures/category_did.png
+  ../out/category_did_results.csv
+  ../out/figures/category_did.png
 """
 
 import os, sys, warnings
@@ -42,7 +42,7 @@ from category_subreddit_mapping import CAT_TO_SUBREDDIT
 TREATMENT = pd.Timestamp("2022-10-27")
 PRE_START = pd.Timestamp("2020-10-27")
 POST_END = pd.Timestamp("2024-10-27")
-FIGURES = "out/figures"
+FIGURES = "../out/figures"
 os.makedirs(FIGURES, exist_ok=True)
 
 plt.rcParams.update(
@@ -102,7 +102,7 @@ MERGED_CATS = {
 
 def build_twitter_panel() -> pd.DataFrame:
     print("Building Twitter daily category panel …")
-    df = pd.read_csv("out/twitter_trending_4yr.csv", parse_dates=["Date"])
+    df = pd.read_csv("../data/twitter_trending_4yr.csv", parse_dates=["Date"])
     df = df.drop_duplicates(subset=["Date", "Topic"])
     df = df[(df["Date"] >= PRE_START) & (df["Date"] <= POST_END)]
     df["category"] = df["Topic"].apply(classify_category)
@@ -144,7 +144,7 @@ def build_reddit_controls() -> dict:
     date_idx = pd.date_range(PRE_START, POST_END, freq="D")
 
     # Load matched category subreddits
-    cat_path = "out/reddit_category.tsv"
+    cat_path = "../data/reddit_category.tsv"
     cat_controls = {}
     if os.path.exists(cat_path):
         rc = pd.read_csv(cat_path, sep="\t", parse_dates=["date"])
@@ -492,7 +492,7 @@ def export_stata_panel(
     tw_share: pd.DataFrame, cat_controls: dict, generic_baseline: pd.Series
 ):
     """
-    Export the stacked DiD panel to out/stata_panel.csv for Stata analysis.
+    Export the stacked DiD panel to ../out/stata_panel.csv for Stata analysis.
     One row per (date, category, platform).
     Columns: date, category, twitter, post, log_dev, did, quarter
     """
@@ -543,8 +543,8 @@ def export_stata_panel(
             )
 
     panel = pd.DataFrame(rows)
-    panel.to_csv("out/stata_panel.csv", index=False)
-    print(f"Saved: out/stata_panel.csv  ({len(panel):,} rows)")
+    panel.to_csv("../../out/stata_panel.csv", index=False)
+    print(f"Saved: ../out/stata_panel.csv  ({len(panel):,} rows)")
 
 
 # ── MAIN ─────────────────────────────────────────────────────────────────────
@@ -566,8 +566,8 @@ if __name__ == "__main__":
     res = run_category_did(tw_share, cat_controls, generic_baseline)
     print_results(res)
 
-    res.to_csv("out/category_did_results.csv", index=False)
-    print("\nSaved: out/category_did_results.csv")
+    res.to_csv("../../out/category_did_results.csv", index=False)
+    print("\nSaved: ../out/category_did_results.csv")
 
     # ── Export stacked panel for Stata ───────────────────────────────────────
     export_stata_panel(tw_share, cat_controls, generic_baseline)
