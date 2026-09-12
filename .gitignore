@@ -1,8 +1,6 @@
 __pycache__
 *.docx
 *.pdf
-*.tex
 out/
 .vscode/
 .claude/
-Presentation_GamezA/
